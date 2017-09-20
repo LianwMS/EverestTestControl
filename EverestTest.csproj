@@ -37,6 +37,12 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>MeriClient\LoadTestFramework.ClientLibrary.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.TeamFoundation.Build.Client, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.TeamFoundation.Client, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Management.Automation, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -53,6 +59,9 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TFS\TestStatus.cs" />
+    <Compile Include="TFS\TFSBuild.cs" />
+    <Compile Include="TFS\TFSHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="MeriClient\**\*.*">
@@ -67,6 +76,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <Content Include="TFSBuilds.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

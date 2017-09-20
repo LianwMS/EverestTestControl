@@ -1,16 +1,12 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Management.Automation;
-using System.Collections.ObjectModel;
-using System.Management.Automation.Runspaces;
-using System.Diagnostics;
 using System.Xml;
 
-namespace EversetTest
+namespace EverestTest
 {
     public class Program
     {
@@ -26,11 +22,15 @@ namespace EversetTest
 
         private const string IMAGE_TAG_TIP = "Image Tag: ";
 
+        private const string TFSBUILDFILE = "TFSBuilds.config";
+
+        private static List<TFSBuild> tfsBuilds = LoadTFSBuildFromFile(TFSBUILDFILE);
+
         static void Main(string[] args)
         {
-            string tag;
-            BuildDockerImage(WORKER_DROP_FOLDER, "", out tag);
-            StartTest(tag);
+            //string tag;
+            //BuildDockerImage(WORKER_DROP_FOLDER, "", out tag);
+            //StartTest(tag);
         }
 
         private static bool BuildDockerImage(string workerDropFolder, string dbDropFolder, out string tag)
@@ -81,7 +81,8 @@ namespace EversetTest
             int result = RunPSScript(psScriptPath, new Dictionary<string, string>(){
                 { "dropFolder", WORKER_DROP_FOLDER },
                 { "dbScriptDropFolder", DB_DROP_FOLDER }
-            }, data => {
+            }, data =>
+            {
                 Console.WriteLine(data);
                 if (data.StartsWith(IMAGE_TAG_TIP))
                 {
@@ -134,7 +135,7 @@ namespace EversetTest
         {
             return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, fileName);
         }
-        
+
         private static int RunPSScript(string scriptPath, Dictionary<string, string> arguments, OutputHandler stdoutHandler = null, OutputHandler stderrHandler = null)
         {
             string psArgs = string.Join(" ", arguments.Select(pair => string.Format("-{0} '{1}'", pair.Key, pair.Value.Replace("'", "''"))));
@@ -165,6 +166,42 @@ namespace EversetTest
             p.BeginErrorReadLine();
             p.WaitForExit();
             return p.ExitCode;
+        }
+
+        private static List<TFSBuild> LoadTFSBuildFromFile(string fileName)
+        {
+            var strs = File.ReadAllLines(GenerateFilePath(fileName));
+            var tFSBuild = strs.Select(str => JsonConvert.DeserializeObject<TFSBuild>(str)).ToList<TFSBuild>();
+            return tFSBuild;
+        }
+
+        private static void WriteTFSBuildToFile(string fileName)
+        {
+            string[] strs = tfsBuilds.Select(b => JsonConvert.SerializeObject(b)).ToArray();
+            File.WriteAllLines(fileName, strs);
+        }
+
+        private static bool TryGetNewBuildFromTFS()
+        {
+            bool result = false;
+            var details = TFSHelper.GetSuccessfulBuildDetails();
+
+            foreach (var detail in details)
+            {
+                var isIncluded = tfsBuilds.Where(t => t.TFSBuildNumber.Equals(detail.BuildNumber)).Count();
+                if (isIncluded == 0)
+                {
+                    tfsBuilds.Add(new TFSBuild()
+                    {
+                        TFSBuildNumber = detail.BuildNumber,
+                        BuildFinishedTime = detail.FinishTime,
+                        BuildStatus = detail.Status.ToString(),
+                        TestStatus = TestStatus.NotStart,
+                    });
+                    result = true;
+                }
+            }
+            return result;
         }
     }
 }
