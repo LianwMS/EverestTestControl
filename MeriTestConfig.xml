@@ -1,0 +1,87 @@
+﻿<Configuration>
+  <!--The name of your test-->
+  <Name>Everest</Name>
+  <Owners>Fareast\wenjiefu</Owners>
+  <!--The Token for authorization. The Auth has been disabled in the Codebox Meri deployment, so just put it as empty-->
+  <Token>d2VuamllZnUlNDBtaWNyb3NvZnQuY29tXDU2YjBhOTgwLWZjMTMtNGU4ZC05Yzg1LTM5OTM3MmU3MGYzMw==</Token>
+  <!-- Grant additional initial permission here if needed. -->
+  <Permissions>
+    <Permission identity="lianw@microsoft.com" canRead="true" canModify="true" canExecute="true" canManagePermission="true" />
+    <Permission identity="t-jianzh@microsoft.com" canRead="true" canModify="true" canExecute="true" canManagePermission="true" />
+  </Permissions>
+  <!--Set to true to tell Meri Client Tool to start the test in local machine so that you can troubleshoot or debug easily-->
+  <LocalRun>false</LocalRun>
+  <!--How long do you want your test to run-->
+  <TimeoutInSecond>7200</TimeoutInSecond>
+  <FileLogger path='.\Log\testlog.txt.html'/>
+  <Meri>
+    <!--Keep this empty to start a new test, otherwise put the taskId here to tell meri client tool to attach to the task-->
+    <TaskId></TaskId>
+    <FileSetInfos>
+      <!--The test assemblies that's needed to run your test-->
+      <FileSetInfo name='EverestMsi' id ='7086e5fa-51c3-468c-afce-ba76be93eaba' localFolder='D:\bits'/>
+      <FileSetInfo name='EverestTestAssemblies' id ='' localFolder='D:\amd64'/>
+    </FileSetInfos>
+    <Parameters>
+      <Parameter key='ContainerImageTag' value='' />
+    </Parameters>
+    <!--Where do you want to run your test, it's only useful when you have multiple SU so you may want to start load from different data center-->
+    <Region>MeriWus</Region>
+    <Tags>SampleLoad</Tags>
+    <WorkItemDefinitions>
+      <!--name: the name of your test in Meri
+          tag: you can use tag to group related test so that you can start all the test with some specific tag if needed
+          manualStart: whether you want the test to be started immediately or you want to start it manually later  -->
+      <MSTest name='SampleCase' tag='EverstSampleTest' manualStart='false'>
+        <!--The mstest method-->
+        <TestMethod testAssembly='Microsoft.SqlServer.IntegrationServices.MSTest' testClass='Microsoft.SqlServer.IntegrationServices.MSTest.EverestTestCases'>SampleScenario</TestMethod>
+        <!--Whether to start immediately or have some delay, multiple delay can be set here like '0,600,1200' which means 
+            this MSTest load will be started 3 times with the Delay of 0, 600 and 1200 after the test is started
+            You can also define delay start in repeat mode like 30:60*10 means starting from 30 sec, adding load every 60 second for 10 times-->
+        <DelayStartInSecond>0</DelayStartInSecond>
+        <!--How many instance of this test you want to start-->
+        <InstanceCount>1</InstanceCount>
+        <Region>MeriWus</Region>
+        <!--Normal or Recursive. A Normal WorkItem will be run once while a Recursive WorkItem will be run repeatly-->
+        <WorkItemType>Normal</WorkItemType>
+        <!--Only used when the WorkItemType is Recursive. Defined the interval between each repeat. Please be aware that if the test takes longer than the interval, 
+            the next repeat will be delayed until the previous run finishes-->
+        <TypeArg>3</TypeArg>
+        <!--How much resource do you think your test will take in one machine. Meri will make sure the sum of the weight of all the test running in one worker machine is less than 1000-->
+        <Weight>900</Weight>
+      </MSTest>
+      <MSTest name='ScaleOut_FolderAndSecurityTest' tag='EverstSampleTest' manualStart='false'>
+        <TestMethod testAssembly='Microsoft.SqlServer.IntegrationServices.MSTest' testClass='Microsoft.SqlServer.IntegrationServices.MSTest.EverestTestCases'>ScaleOut_FolderAndSecurityTest</TestMethod>
+        <DelayStartInSecond>0</DelayStartInSecond>
+        <InstanceCount>1</InstanceCount>
+        <Parameters>
+        </Parameters>
+        <Region>MeriWus</Region>
+        <WorkItemType>Normal</WorkItemType>
+        <TypeArg>10</TypeArg>
+        <Weight>900</Weight>
+      </MSTest>
+    </WorkItemDefinitions>
+    <!--Define the customized perf counters, this part is optional-->
+    <PerfCounters>
+    </PerfCounters>
+
+    <!--Following part of settings contains some advanced feature from Meri, Please refer to https://microsoft.sharepoint.com/teams/datamovement2/_layouts/OneNote.aspx?id=%2fteams%2fdatamovement2%2fShared%20Documents%2fTeam%2fServicePlatform%2fMeri%2fMeriOneNote&wd=target%28SampleConfig.one%7c60A4A1CA-3D7B-4C64-BDDC-6D85AA56B700%2f%29 for detail-->
+
+    <!--You can add monitor on your service perf counter source (MDS) here so they will be shown in portal along with test side perf counter in real time-->
+    <!--<AdditionalPerfCounterSource></AdditionalPerfCounterSource>-->
+
+    <!--You can add monitor on your DB by defining the query so they will be shown in portal along with other perf counter in real time. -->
+    <!--<DatabaseMonitor></DatabaseMonitor>-->
+
+    <!--Additional data pulling task you want to include when running test in Meri, usually you can include real time service side error analysis here-->
+    <!--<AdditionalPulling></AdditionalPulling>-->
+
+    <!--Here you can define "View". a View can contains multiple charts containing defined perf counters, which makes the analysis and reporting much easier-->
+    <!--You can find the View under 'Analysis' tab in the selected Task in Meri Portal-->
+
+
+    <!--Here you can define Comparisons to compare current test run with other test runs easily-->
+
+  </Meri>
+</Configuration>
