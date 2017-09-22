@@ -19,14 +19,17 @@
     <TaskId></TaskId>
     <FileSetInfos>
       <!--The test assemblies that's needed to run your test-->
-      <FileSetInfo name='EverestMsi' id ='7086e5fa-51c3-468c-afce-ba76be93eaba' localFolder='D:\bits'/>
-      <FileSetInfo name='EverestTestAssemblies' id ='' localFolder='D:\amd64'/>
+      <FileSetInfo name='EverestMsi' id ='' localFolder='D:\MeriFiles\bits'/>
+      <FileSetInfo name='EverestTestAssemblies' id ='' localFolder='D:\MeriFiles\amd64'/>
+      <FileSetInfo name='EverestTestPipelineReworkFiles' id ='' localFolder='D:\MeriFiles\PipelineReworkFiles'/>
+      <FileSetInfo name='EverestTestConfig' id ='' localFolder='D:\MeriFiles\config'/>
     </FileSetInfos>
     <Parameters>
-      <Parameter key='ContainerImageTag' value='' />
+      <Parameter key='ContainerImageTag' value='14.0.601.29755.3248955-14.0.601.29755.3248955' />
+      <Parameter key='ContainerLocation' value='westus' />
     </Parameters>
     <!--Where do you want to run your test, it's only useful when you have multiple SU so you may want to start load from different data center-->
-    <Region>MeriWus</Region>
+    <Region>MeriWus2</Region>
     <Tags>SampleLoad</Tags>
     <WorkItemDefinitions>
       <!--name: the name of your test in Meri
@@ -41,7 +44,7 @@
         <DelayStartInSecond>0</DelayStartInSecond>
         <!--How many instance of this test you want to start-->
         <InstanceCount>1</InstanceCount>
-        <Region>MeriWus</Region>
+        <Region>MeriWus2</Region>
         <!--Normal or Recursive. A Normal WorkItem will be run once while a Recursive WorkItem will be run repeatly-->
         <WorkItemType>Normal</WorkItemType>
         <!--Only used when the WorkItemType is Recursive. Defined the interval between each repeat. Please be aware that if the test takes longer than the interval, 
@@ -54,9 +57,108 @@
         <TestMethod testAssembly='Microsoft.SqlServer.IntegrationServices.MSTest' testClass='Microsoft.SqlServer.IntegrationServices.MSTest.EverestTestCases'>ScaleOut_FolderAndSecurityTest</TestMethod>
         <DelayStartInSecond>0</DelayStartInSecond>
         <InstanceCount>1</InstanceCount>
-        <Parameters>
-        </Parameters>
-        <Region>MeriWus</Region>
+        <Region>MeriWus2</Region>
+        <WorkItemType>Normal</WorkItemType>
+        <TypeArg>10</TypeArg>
+        <Weight>900</Weight>
+      </MSTest>
+      <MSTest name='ScaleOut_ProjectAndEnvironmentTest' tag='EverstSampleTest' manualStart='false'>
+        <TestMethod testAssembly='Microsoft.SqlServer.IntegrationServices.MSTest' testClass='Microsoft.SqlServer.IntegrationServices.MSTest.EverestTestCases'>ScaleOut_ProjectAndEnvironmentTest</TestMethod>
+        <DelayStartInSecond>0</DelayStartInSecond>
+        <InstanceCount>1</InstanceCount>
+        <Region>MeriWus2</Region>
+        <WorkItemType>Normal</WorkItemType>
+        <TypeArg>10</TypeArg>
+        <Weight>900</Weight>
+      </MSTest>
+      <!--
+      <MSTest name='ScaleOut_ServerLoggingTest' tag='EverstSampleTest' manualStart='false'>
+        <TestMethod testAssembly='Microsoft.SqlServer.IntegrationServices.MSTest' testClass='Microsoft.SqlServer.IntegrationServices.MSTest.EverestTestCases'>ScaleOut_ServerLoggingTest</TestMethod>
+        <DelayStartInSecond>0</DelayStartInSecond>
+        <InstanceCount>1</InstanceCount>
+        <Region>MeriWus2</Region>
+        <WorkItemType>Normal</WorkItemType>
+        <TypeArg>10</TypeArg>
+        <Weight>900</Weight>
+      </MSTest>
+      -->
+      <MSTest name='ScaleOut_UnicodeFlatFileAdapters' tag='EverstSampleTest' manualStart='false'>
+        <TestMethod testAssembly='Microsoft.SqlServer.IntegrationServices.MSTest' testClass='Microsoft.SqlServer.IntegrationServices.MSTest.EverestTestCases'>ScaleOut_UnicodeFlatFileAdapters</TestMethod>
+        <DelayStartInSecond>0</DelayStartInSecond>
+        <InstanceCount>1</InstanceCount>
+        <Region>MeriWus2</Region>
+        <WorkItemType>Normal</WorkItemType>
+        <TypeArg>10</TypeArg>
+        <Weight>900</Weight>
+      </MSTest>
+      <MSTest name='ScaleOut_OLEDBTest' tag='EverstSampleTest' manualStart='false'>
+        <TestMethod testAssembly='Microsoft.SqlServer.IntegrationServices.MSTest' testClass='Microsoft.SqlServer.IntegrationServices.MSTest.EverestTestCases'>ScaleOut_OLEDBTest</TestMethod>
+        <DelayStartInSecond>0</DelayStartInSecond>
+        <InstanceCount>1</InstanceCount>
+        <Region>MeriWus2</Region>
+        <WorkItemType>Normal</WorkItemType>
+        <TypeArg>10</TypeArg>
+        <Weight>900</Weight>
+      </MSTest>
+      <MSTest name='ScaleOut_RawAdapter' tag='EverstSampleTest' manualStart='false'>
+        <TestMethod testAssembly='Microsoft.SqlServer.IntegrationServices.MSTest' testClass='Microsoft.SqlServer.IntegrationServices.MSTest.EverestTestCases'>ScaleOut_RawAdapter</TestMethod>
+        <DelayStartInSecond>0</DelayStartInSecond>
+        <InstanceCount>1</InstanceCount>
+        <Region>MeriWus2</Region>
+        <WorkItemType>Normal</WorkItemType>
+        <TypeArg>10</TypeArg>
+        <Weight>900</Weight>
+      </MSTest>
+      <MSTest name='ScaleOut_XMLSrc' tag='EverstSampleTest' manualStart='false'>
+        <TestMethod testAssembly='Microsoft.SqlServer.IntegrationServices.MSTest' testClass='Microsoft.SqlServer.IntegrationServices.MSTest.EverestTestCases'>ScaleOut_XMLSrc</TestMethod>
+        <DelayStartInSecond>0</DelayStartInSecond>
+        <InstanceCount>1</InstanceCount>
+        <Region>MeriWus2</Region>
+        <WorkItemType>Normal</WorkItemType>
+        <TypeArg>10</TypeArg>
+        <Weight>900</Weight>
+      </MSTest>
+      <MSTest name='ScaleOut_SQLTask' tag='EverstSampleTest' manualStart='false'>
+        <TestMethod testAssembly='Microsoft.SqlServer.IntegrationServices.MSTest' testClass='Microsoft.SqlServer.IntegrationServices.MSTest.EverestTestCases'>ScaleOut_SQLTask</TestMethod>
+        <DelayStartInSecond>0</DelayStartInSecond>
+        <InstanceCount>1</InstanceCount>
+        <Region>MeriWus2</Region>
+        <WorkItemType>Normal</WorkItemType>
+        <TypeArg>10</TypeArg>
+        <Weight>900</Weight>
+      </MSTest>
+      <MSTest name='ScaleOut_PipelineRework' tag='EverstSampleTest' manualStart='false'>
+        <TestMethod testAssembly='Microsoft.SqlServer.IntegrationServices.MSTest' testClass='Microsoft.SqlServer.IntegrationServices.MSTest.EverestTestCases'>ScaleOut_PipelineRework</TestMethod>
+        <DelayStartInSecond>0</DelayStartInSecond>
+        <InstanceCount>1</InstanceCount>
+        <Region>MeriWus2</Region>
+        <WorkItemType>Normal</WorkItemType>
+        <TypeArg>10</TypeArg>
+        <Weight>900</Weight>
+      </MSTest>
+      <MSTest name='ScaleOut_Script' tag='EverstSampleTest' manualStart='false'>
+        <TestMethod testAssembly='Microsoft.SqlServer.IntegrationServices.MSTest' testClass='Microsoft.SqlServer.IntegrationServices.MSTest.EverestTestCases'>ScaleOut_Script</TestMethod>
+        <DelayStartInSecond>0</DelayStartInSecond>
+        <InstanceCount>1</InstanceCount>
+        <Region>MeriWus2</Region>
+        <WorkItemType>Normal</WorkItemType>
+        <TypeArg>10</TypeArg>
+        <Weight>900</Weight>
+      </MSTest>
+      <MSTest name='ScaleOut_Lookup' tag='EverstSampleTest' manualStart='false'>
+        <TestMethod testAssembly='Microsoft.SqlServer.IntegrationServices.MSTest' testClass='Microsoft.SqlServer.IntegrationServices.MSTest.EverestTestCases'>ScaleOut_Lookup</TestMethod>
+        <DelayStartInSecond>0</DelayStartInSecond>
+        <InstanceCount>1</InstanceCount>
+        <Region>MeriWus2</Region>
+        <WorkItemType>Normal</WorkItemType>
+        <TypeArg>10</TypeArg>
+        <Weight>900</Weight>
+      </MSTest>
+      <MSTest name='ScaleOut_OLEDBCommandDest' tag='EverstSampleTest' manualStart='false'>
+        <TestMethod testAssembly='Microsoft.SqlServer.IntegrationServices.MSTest' testClass='Microsoft.SqlServer.IntegrationServices.MSTest.EverestTestCases'>ScaleOut_OLEDBCommandDest</TestMethod>
+        <DelayStartInSecond>0</DelayStartInSecond>
+        <InstanceCount>1</InstanceCount>
+        <Region>MeriWus2</Region>
         <WorkItemType>Normal</WorkItemType>
         <TypeArg>10</TypeArg>
         <Weight>900</Weight>
