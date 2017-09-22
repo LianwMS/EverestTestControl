@@ -37,46 +37,9 @@ namespace EverestTest
         {
             string psScript = string.Empty;
             string psScriptPath = GenerateFilePath(BUILD_PS);
-            /*
-            Console.WriteLine("Start to Load build ps1");
-            if (File.Exists(psScriptPath))
-            {
-                psScript = File.ReadAllText(psScriptPath);
-            }
-            else
-            {
-                throw new FileNotFoundException(psScriptPath);
-            }
-            */
 
             Console.WriteLine("Start to run build ps1");
-            //Console.WriteLine(psScript);
-            /*
-            using (PowerShell PowerShellInstance = PowerShell.Create())
-            {
-                PowerShellInstance.AddScript(psScriptPath);
 
-                // use "AddParameter" to add a single parameter to the last command/script on the pipeline.
-                PowerShellInstance.AddParameter("dropFolder", WORKER_DROP_FOLDER);
-                PowerShellInstance.AddParameter("dbScriptDropFolder", DB_DROP_FOLDER);
-                PowerShellInstance.AddParameter("sourceFolder", GenerateFilePath(BUILD_FOLDER));
-
-                Collection<PSObject> PSOutput = PowerShellInstance.Invoke();
-
-                foreach (PSObject outputItem in PSOutput)
-                {
-                    // if null object was dumped to the pipeline during the script then a null
-                    // object may be present here. check for null to prevent potential NRE.
-                    if (outputItem != null)
-                    {
-                        //TODO: do something with the output item 
-                        Console.WriteLine(outputItem.BaseObject.GetType().FullName);
-                        Console.WriteLine(outputItem.BaseObject.ToString() + "\n");
-                    }
-                }
-                
-            }
-            */
             string tagOut = string.Empty;
             int result = RunPSScript(psScriptPath, new Dictionary<string, string>(){
                 { "dropFolder", WORKER_DROP_FOLDER },
@@ -100,11 +63,6 @@ namespace EverestTest
                 Console.WriteLine("Docker image build and upload failed");
                 return false;
             }
-        }
-
-        private static bool UploadDockerImage()
-        {
-            return false;
         }
 
         private static bool StartTest(string containerImageTag)
