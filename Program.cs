@@ -26,6 +26,8 @@ namespace EverestTest
 
         private static List<TFSBuild> tfsBuilds = LoadTFSBuildFromFile(TFSBUILDFILE);
 
+        private const string MERI_URL = "https://meri.cloudapp.net";
+
         static void Main(string[] args)
         {
             //string tag;
@@ -81,9 +83,26 @@ namespace EverestTest
             string tempConfigFile = Path.GetTempFileName();
             testConfig.Save(tempConfigFile);
 
+            Guid taskId = Guid.Empty;
             // monitor will stay for 1 min
-            int exitCode = RunCommand(GenerateFilePath(TEST_ORGANIZER_EXE), $"\"{tempConfigFile}\" 1");
+            int exitCode = RunCommand(GenerateFilePath(TEST_ORGANIZER_EXE), $"\"{tempConfigFile}\" 1", data =>
+            {
+                const string taskIdTip = "Task Id = ";
+                int pos = data.IndexOf(taskIdTip);
+                if (pos != -1)
+                {
+                    taskId = Guid.Parse(data.Substring(pos + taskIdTip.Length));
+                }
+            });
             File.Delete(tempConfigFile);
+
+            if (taskId == Guid.Empty)
+            {
+                Console.WriteLine("Task Id is not found.");
+                return false;
+            }
+
+            Console.WriteLine("Task Id = {0}", taskId);
 
             // todo: extract result
             return false;
