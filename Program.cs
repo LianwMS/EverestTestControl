@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Threading;
 using System.Xml;
 
@@ -105,6 +106,7 @@ namespace EverestTest
         {
             protected override void DoWork(CancellationToken cancel)
             {
+                ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
                 while (!cancel.IsCancellationRequested)
                 {
                     try
