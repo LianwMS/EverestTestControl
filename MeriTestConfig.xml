@@ -19,13 +19,13 @@
     <TaskId></TaskId>
     <FileSetInfos>
       <!--The test assemblies that's needed to run your test-->
-      <FileSetInfo name='EverestMsi' id ='' localFolder='D:\MeriFiles\bits'/>
-      <FileSetInfo name='EverestTestAssemblies' id ='' localFolder='D:\MeriFiles\amd64'/>
-      <FileSetInfo name='EverestTestPipelineReworkFiles' id ='' localFolder='D:\MeriFiles\PipelineReworkFiles'/>
-      <FileSetInfo name='EverestTestConfig' id ='' localFolder='D:\MeriFiles\config'/>
+      <FileSetInfo name='EverestMsi' id ='31a46abe-38ba-43a6-86ba-a7b259f4e80d' localFolder='D:\MeriFiles\bits'/>
+      <FileSetInfo name='EverestTestAssemblies' id ='1fbdbaff-7e7c-4bbb-acc5-174aae7549bb' localFolder='D:\MeriFiles\amd64'/>
+      <FileSetInfo name='EverestTestPipelineReworkFiles' id ='5bec6047-a13a-46bb-9b32-2fa97ef8306f' localFolder='D:\MeriFiles\PipelineReworkFiles'/>
+      <FileSetInfo name='EverestTestConfig' id ='7e341f87-4a7b-4df2-a0d7-b453d67adf3f' localFolder='D:\MeriFiles\config'/>
     </FileSetInfos>
     <Parameters>
-      <Parameter key='ContainerImageTag' value='14.0.601.29755.3248955-14.0.601.29755.3248955' />
+      <Parameter key='ContainerImageTag' value='' />
       <Parameter key='ContainerLocation' value='westus' />
     </Parameters>
     <!--Where do you want to run your test, it's only useful when you have multiple SU so you may want to start load from different data center-->
@@ -35,24 +35,6 @@
       <!--name: the name of your test in Meri
           tag: you can use tag to group related test so that you can start all the test with some specific tag if needed
           manualStart: whether you want the test to be started immediately or you want to start it manually later  -->
-      <MSTest name='SampleCase' tag='EverstSampleTest' manualStart='false'>
-        <!--The mstest method-->
-        <TestMethod testAssembly='Microsoft.SqlServer.IntegrationServices.MSTest' testClass='Microsoft.SqlServer.IntegrationServices.MSTest.EverestTestCases'>SampleScenario</TestMethod>
-        <!--Whether to start immediately or have some delay, multiple delay can be set here like '0,600,1200' which means 
-            this MSTest load will be started 3 times with the Delay of 0, 600 and 1200 after the test is started
-            You can also define delay start in repeat mode like 30:60*10 means starting from 30 sec, adding load every 60 second for 10 times-->
-        <DelayStartInSecond>0</DelayStartInSecond>
-        <!--How many instance of this test you want to start-->
-        <InstanceCount>1</InstanceCount>
-        <Region>MeriWus2</Region>
-        <!--Normal or Recursive. A Normal WorkItem will be run once while a Recursive WorkItem will be run repeatly-->
-        <WorkItemType>Normal</WorkItemType>
-        <!--Only used when the WorkItemType is Recursive. Defined the interval between each repeat. Please be aware that if the test takes longer than the interval, 
-            the next repeat will be delayed until the previous run finishes-->
-        <TypeArg>3</TypeArg>
-        <!--How much resource do you think your test will take in one machine. Meri will make sure the sum of the weight of all the test running in one worker machine is less than 1000-->
-        <Weight>900</Weight>
-      </MSTest>
       <MSTest name='ScaleOut_FolderAndSecurityTest' tag='EverstSampleTest' manualStart='false'>
         <TestMethod testAssembly='Microsoft.SqlServer.IntegrationServices.MSTest' testClass='Microsoft.SqlServer.IntegrationServices.MSTest.EverestTestCases'>ScaleOut_FolderAndSecurityTest</TestMethod>
         <DelayStartInSecond>0</DelayStartInSecond>

@@ -4,158 +4,50 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Xml;
 
 namespace EverestTest
 {
     public class Program
     {
-        private const string WORKER_DROP_FOLDER = @"\\BLD-FS-DS-05-07\tfs\IS_Scale\3252823";
-        private const string DB_DROP_FOLDER = "";
-        private const string TEST_ASSEMBLY = "";
-
-        private const string BUILD_FOLDER = @"DockerHelper";
-        private const string BUILD_PS = @"DockerHelper\build.ps1";
-
-        private const string TEST_ORGANIZER_EXE = @"MeriClient\LoadTestFramework.TestOrganizer.exe";
-        private const string TEST_CONFIG = @"MeriTestConfig.xml";
-
-        private const string IMAGE_TAG_TIP = "Image Tag: ";
+        private const int TFS_MONITOR_INTERVAL = 60000;
+        private const int TEST_WAIT_INTERVAL = 5000;
+        private const int TEST_MONITOR_INTERVAL = 60000;
 
         private const string TFSBUILDFILE = "TFSBuilds.config";
 
-        private static List<TFSBuild> tfsBuilds = LoadTFSBuildFromFile(TFSBUILDFILE);
-
-        private const string MERI_URL = "https://meri.cloudapp.net";
+        private static List<BuildInfo> tfsBuilds;
 
         static void Main(string[] args)
         {
-            //string tag;
-            //BuildDockerImage(WORKER_DROP_FOLDER, "", out tag);
-            //StartTest(tag);
+            LoadTFSBuildFromFile(TFSBUILDFILE);
+            TFSMonitorWorker tfsMonitor = new TFSMonitorWorker();
+            tfsMonitor.Start();
+            TestWorker testWorker = new TestWorker();
+            testWorker.Start();
         }
-
-        private static bool BuildDockerImage(string workerDropFolder, string dbDropFolder, out string tag)
-        {
-            string psScript = string.Empty;
-            string psScriptPath = GenerateFilePath(BUILD_PS);
-
-            Console.WriteLine("Start to run build ps1");
-
-            string tagOut = string.Empty;
-            int result = RunPSScript(psScriptPath, new Dictionary<string, string>(){
-                { "dropFolder", WORKER_DROP_FOLDER },
-                { "dbScriptDropFolder", DB_DROP_FOLDER }
-            }, data =>
-            {
-                Console.WriteLine(data);
-                if (data.StartsWith(IMAGE_TAG_TIP))
-                {
-                    tagOut = data.Substring(IMAGE_TAG_TIP.Length);
-                }
-            });
-            tag = tagOut;
-            if (result == 0)
-            {
-                Console.WriteLine("Docker image build and upload finished");
-                return true;
-            }
-            else
-            {
-                Console.WriteLine("Docker image build and upload failed");
-                return false;
-            }
-        }
-
-        private static bool StartTest(string containerImageTag)
-        {
-            XmlDocument testConfig = new XmlDocument();
-            testConfig.Load(GenerateFilePath(TEST_CONFIG));
-
-            foreach (var node in testConfig.SelectNodes(@"Configuration\Meri\Parameters\Parameter").Cast<XmlNode>())
-            {
-                if (node.Attributes["key"].Value == "ContainerImageTag")
-                {
-                    node.Attributes["value"].Value = containerImageTag;
-                }
-            }
-
-            string tempConfigFile = Path.GetTempFileName();
-            testConfig.Save(tempConfigFile);
-
-            Guid taskId = Guid.Empty;
-            // monitor will stay for 1 min
-            int exitCode = RunCommand(GenerateFilePath(TEST_ORGANIZER_EXE), $"\"{tempConfigFile}\" 1", data =>
-            {
-                const string taskIdTip = "Task Id = ";
-                int pos = data.IndexOf(taskIdTip);
-                if (pos != -1)
-                {
-                    taskId = Guid.Parse(data.Substring(pos + taskIdTip.Length));
-                }
-            });
-            File.Delete(tempConfigFile);
-
-            if (taskId == Guid.Empty)
-            {
-                Console.WriteLine("Task Id is not found.");
-                return false;
-            }
-
-            Console.WriteLine("Task Id = {0}", taskId);
-
-            // todo: extract result
-            return false;
-        }
-
+        
         private static string GenerateFilePath(string fileName)
         {
             return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, fileName);
         }
 
-        private static int RunPSScript(string scriptPath, Dictionary<string, string> arguments, OutputHandler stdoutHandler = null, OutputHandler stderrHandler = null)
-        {
-            string psArgs = string.Join(" ", arguments.Select(pair => string.Format("-{0} '{1}'", pair.Key, pair.Value.Replace("'", "''"))));
-            return RunCommand("powershell.exe", string.Format("-Command \"& '{0}' {1}\"", scriptPath, psArgs.Replace("\"", "\"\"")), stdoutHandler, stderrHandler);
-        }
-
-        delegate void OutputHandler(string data);
-        private static int RunCommand(string fileName, string args, OutputHandler stdoutHandler = null, OutputHandler stderrHandler = null)
-        {
-            if (stdoutHandler == null)
-            {
-                stdoutHandler = Console.WriteLine;
-            }
-            if (stderrHandler == null)
-            {
-                stderrHandler = Console.Error.WriteLine;
-            }
-            Process p = new Process();
-            p.StartInfo.FileName = fileName;
-            p.StartInfo.Arguments = args;
-            p.StartInfo.UseShellExecute = false;
-            p.StartInfo.RedirectStandardOutput = true;
-            p.StartInfo.RedirectStandardError = true;
-            p.OutputDataReceived += (sender, e) => stdoutHandler(e.Data);
-            p.ErrorDataReceived += (sender, e) => stderrHandler(e.Data);
-            p.Start();
-            p.BeginOutputReadLine();
-            p.BeginErrorReadLine();
-            p.WaitForExit();
-            return p.ExitCode;
-        }
-
-        private static List<TFSBuild> LoadTFSBuildFromFile(string fileName)
+        #region TFS
+        private static void LoadTFSBuildFromFile(string fileName)
         {
             var strs = File.ReadAllLines(GenerateFilePath(fileName));
-            var tFSBuild = strs.Select(str => JsonConvert.DeserializeObject<TFSBuild>(str)).ToList<TFSBuild>();
-            return tFSBuild;
+            tfsBuilds = strs.Select(str => JsonConvert.DeserializeObject<BuildInfo>(str)).ToList();
         }
 
         private static void WriteTFSBuildToFile(string fileName)
         {
-            string[] strs = tfsBuilds.Select(b => JsonConvert.SerializeObject(b)).ToArray();
-            File.WriteAllLines(fileName, strs);
+            string[] strs;
+            lock (tfsBuilds)
+            {
+                strs = tfsBuilds.Select(b => JsonConvert.SerializeObject(b)).ToArray();
+                File.WriteAllLines(fileName, strs);
+            }
         }
 
         private static bool TryGetNewBuildFromTFS()
@@ -168,17 +60,114 @@ namespace EverestTest
                 var isIncluded = tfsBuilds.Where(t => t.TFSBuildNumber.Equals(detail.BuildNumber)).Count();
                 if (isIncluded == 0)
                 {
-                    tfsBuilds.Add(new TFSBuild()
+                    Console.WriteLine("Found: {0}", detail.BuildNumber);
+                    lock (tfsBuilds)
                     {
-                        TFSBuildNumber = detail.BuildNumber,
-                        BuildFinishedTime = detail.FinishTime,
-                        BuildStatus = detail.Status.ToString(),
-                        TestStatus = TestStatus.NotStart,
-                    });
+                        tfsBuilds.Add(new BuildInfo()
+                        {
+                            TFSBuildNumber = detail.BuildNumber,
+                            DropFolder = detail.DropLocation,
+                            BuildStatus = detail.Status.ToString(),
+                            BuildFinishedTime = detail.FinishTime,
+                            TestStatus = TestStatus.NotStart,
+                        });
+                    }
                     result = true;
                 }
             }
             return result;
         }
+        
+        class TFSMonitorWorker : Worker
+        {
+            protected override void DoWork(CancellationToken cancel)
+            {
+                while (!cancel.IsCancellationRequested)
+                {
+                    Console.WriteLine("Fetching new builds from TFS");
+                    if (TryGetNewBuildFromTFS())
+                    {
+                        Console.WriteLine("Found new builds");
+                        WriteTFSBuildToFile(TFSBUILDFILE);
+                    }
+                    else
+                    {
+                        Console.WriteLine("New builds were not found");
+                    }
+                    Thread.Sleep(TFS_MONITOR_INTERVAL);
+                }
+            }
+        }
+        #endregion TFS
+
+        #region Meri
+        class TestWorker : Worker
+        {
+            protected override void DoWork(CancellationToken cancel)
+            {
+                while (!cancel.IsCancellationRequested)
+                {
+                    try
+                    {
+                        var build = FindNextTestNotFinished();
+                        if (build == null)
+                        {
+                            Thread.Sleep(TEST_WAIT_INTERVAL);
+                        }
+                        else if (build.TestStatus == TestStatus.NotStart)
+                        {
+                            build.TestStatus = TestStatus.TestPrepare;
+                            WriteTFSBuildToFile(TFSBUILDFILE);
+                            Console.WriteLine("Prepare test for {0}", build.TFSBuildNumber);
+                        }
+                        else if (build.TestStatus == TestStatus.TestPrepare)
+                        {
+                            string tag = build.ImageTag;
+                            if (tag == null)
+                            {
+                                TestHelper.BuildDockerImage(build.DropFolder, build.DropFolder, out tag);
+                                build.ImageTag = tag;
+                                WriteTFSBuildToFile(TFSBUILDFILE);
+                            }
+                            Console.WriteLine("Image tag for {0} is {1}", build.TFSBuildNumber, build.ImageTag);
+
+                            build.TestStartTime = DateTimeOffset.Now;
+                            build.TestTaskId = TestHelper.StartTest(tag);
+                            build.TestStatus = TestStatus.Testing;
+                            WriteTFSBuildToFile(TFSBUILDFILE);
+                            Console.WriteLine("Start testing {0} taskId = {1}", build.TFSBuildNumber, build.TestTaskId);
+                        }
+                        else if (build.TestStatus == TestStatus.Testing)
+                        {
+                            if (TestHelper.CheckFinished(build.TestTaskId))
+                            {
+                                build.TestStatus = TestStatus.Finished;
+                                build.TestFinishedTime = DateTimeOffset.Now;
+                                WriteTFSBuildToFile(TFSBUILDFILE);
+                                Console.WriteLine("{0} finished", build.TFSBuildNumber);
+                            }
+                            else
+                            {
+                                Thread.Sleep(TEST_MONITOR_INTERVAL);
+                            }
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e);
+                        Thread.Sleep(TEST_WAIT_INTERVAL);
+                    }
+                }
+            }
+        }
+        
+        static BuildInfo FindNextTestNotFinished()
+        {
+            lock (tfsBuilds)
+            {
+                return tfsBuilds.FirstOrDefault(b => b.TestStatus != TestStatus.Finished);
+            }
+        }
+        #endregion Meri
     }
 }
