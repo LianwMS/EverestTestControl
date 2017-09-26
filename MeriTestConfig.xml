@@ -20,7 +20,7 @@
     <FileSetInfos>
       <!--The test assemblies that's needed to run your test-->
       <FileSetInfo name='EverestMsi' id ='31a46abe-38ba-43a6-86ba-a7b259f4e80d' localFolder='D:\MeriFiles\bits'/>
-      <FileSetInfo name='EverestTestAssemblies' id ='1fbdbaff-7e7c-4bbb-acc5-174aae7549bb' localFolder='D:\MeriFiles\amd64'/>
+      <FileSetInfo name='EverestTestAssemblies' id ='8475ba45-73ed-4def-bca0-71fdf83ce9b1' localFolder='D:\MeriFiles\amd64'/>
       <FileSetInfo name='EverestTestPipelineReworkFiles' id ='5bec6047-a13a-46bb-9b32-2fa97ef8306f' localFolder='D:\MeriFiles\PipelineReworkFiles'/>
       <FileSetInfo name='EverestTestConfig' id ='7e341f87-4a7b-4df2-a0d7-b453d67adf3f' localFolder='D:\MeriFiles\config'/>
     </FileSetInfos>
@@ -40,8 +40,8 @@
         <DelayStartInSecond>0</DelayStartInSecond>
         <InstanceCount>1</InstanceCount>
         <Region>MeriWus2</Region>
-        <WorkItemType>Normal</WorkItemType>
-        <TypeArg>10</TypeArg>
+        <WorkItemType>Recursive</WorkItemType>
+        <TypeArg>1</TypeArg>
         <Weight>900</Weight>
       </MSTest>
       <MSTest name='ScaleOut_ProjectAndEnvironmentTest' tag='EverstSampleTest' manualStart='false'>
@@ -49,8 +49,8 @@
         <DelayStartInSecond>0</DelayStartInSecond>
         <InstanceCount>1</InstanceCount>
         <Region>MeriWus2</Region>
-        <WorkItemType>Normal</WorkItemType>
-        <TypeArg>10</TypeArg>
+        <WorkItemType>Recursive</WorkItemType>
+        <TypeArg>1</TypeArg>
         <Weight>900</Weight>
       </MSTest>
       <!--
@@ -59,8 +59,8 @@
         <DelayStartInSecond>0</DelayStartInSecond>
         <InstanceCount>1</InstanceCount>
         <Region>MeriWus2</Region>
-        <WorkItemType>Normal</WorkItemType>
-        <TypeArg>10</TypeArg>
+        <WorkItemType>Recursive</WorkItemType>
+        <TypeArg>1</TypeArg>
         <Weight>900</Weight>
       </MSTest>
       -->
@@ -69,8 +69,8 @@
         <DelayStartInSecond>0</DelayStartInSecond>
         <InstanceCount>1</InstanceCount>
         <Region>MeriWus2</Region>
-        <WorkItemType>Normal</WorkItemType>
-        <TypeArg>10</TypeArg>
+        <WorkItemType>Recursive</WorkItemType>
+        <TypeArg>1</TypeArg>
         <Weight>900</Weight>
       </MSTest>
       <MSTest name='ScaleOut_OLEDBTest' tag='EverstSampleTest' manualStart='false'>
@@ -78,8 +78,8 @@
         <DelayStartInSecond>0</DelayStartInSecond>
         <InstanceCount>1</InstanceCount>
         <Region>MeriWus2</Region>
-        <WorkItemType>Normal</WorkItemType>
-        <TypeArg>10</TypeArg>
+        <WorkItemType>Recursive</WorkItemType>
+        <TypeArg>1</TypeArg>
         <Weight>900</Weight>
       </MSTest>
       <MSTest name='ScaleOut_RawAdapter' tag='EverstSampleTest' manualStart='false'>
@@ -87,8 +87,8 @@
         <DelayStartInSecond>0</DelayStartInSecond>
         <InstanceCount>1</InstanceCount>
         <Region>MeriWus2</Region>
-        <WorkItemType>Normal</WorkItemType>
-        <TypeArg>10</TypeArg>
+        <WorkItemType>Recursive</WorkItemType>
+        <TypeArg>1</TypeArg>
         <Weight>900</Weight>
       </MSTest>
       <MSTest name='ScaleOut_XMLSrc' tag='EverstSampleTest' manualStart='false'>
@@ -96,8 +96,8 @@
         <DelayStartInSecond>0</DelayStartInSecond>
         <InstanceCount>1</InstanceCount>
         <Region>MeriWus2</Region>
-        <WorkItemType>Normal</WorkItemType>
-        <TypeArg>10</TypeArg>
+        <WorkItemType>Recursive</WorkItemType>
+        <TypeArg>1</TypeArg>
         <Weight>900</Weight>
       </MSTest>
       <MSTest name='ScaleOut_SQLTask' tag='EverstSampleTest' manualStart='false'>
@@ -105,8 +105,8 @@
         <DelayStartInSecond>0</DelayStartInSecond>
         <InstanceCount>1</InstanceCount>
         <Region>MeriWus2</Region>
-        <WorkItemType>Normal</WorkItemType>
-        <TypeArg>10</TypeArg>
+        <WorkItemType>Recursive</WorkItemType>
+        <TypeArg>1</TypeArg>
         <Weight>900</Weight>
       </MSTest>
       <MSTest name='ScaleOut_PipelineRework' tag='EverstSampleTest' manualStart='false'>
@@ -114,8 +114,8 @@
         <DelayStartInSecond>0</DelayStartInSecond>
         <InstanceCount>1</InstanceCount>
         <Region>MeriWus2</Region>
-        <WorkItemType>Normal</WorkItemType>
-        <TypeArg>10</TypeArg>
+        <WorkItemType>Recursive</WorkItemType>
+        <TypeArg>1</TypeArg>
         <Weight>900</Weight>
       </MSTest>
       <MSTest name='ScaleOut_Script' tag='EverstSampleTest' manualStart='false'>
@@ -123,8 +123,8 @@
         <DelayStartInSecond>0</DelayStartInSecond>
         <InstanceCount>1</InstanceCount>
         <Region>MeriWus2</Region>
-        <WorkItemType>Normal</WorkItemType>
-        <TypeArg>10</TypeArg>
+        <WorkItemType>Recursive</WorkItemType>
+        <TypeArg>1</TypeArg>
         <Weight>900</Weight>
       </MSTest>
       <MSTest name='ScaleOut_Lookup' tag='EverstSampleTest' manualStart='false'>
@@ -132,8 +132,8 @@
         <DelayStartInSecond>0</DelayStartInSecond>
         <InstanceCount>1</InstanceCount>
         <Region>MeriWus2</Region>
-        <WorkItemType>Normal</WorkItemType>
-        <TypeArg>10</TypeArg>
+        <WorkItemType>Recursive</WorkItemType>
+        <TypeArg>1</TypeArg>
         <Weight>900</Weight>
       </MSTest>
       <MSTest name='ScaleOut_OLEDBCommandDest' tag='EverstSampleTest' manualStart='false'>
@@ -141,8 +141,8 @@
         <DelayStartInSecond>0</DelayStartInSecond>
         <InstanceCount>1</InstanceCount>
         <Region>MeriWus2</Region>
-        <WorkItemType>Normal</WorkItemType>
-        <TypeArg>10</TypeArg>
+        <WorkItemType>Recursive</WorkItemType>
+        <TypeArg>1</TypeArg>
         <Weight>900</Weight>
       </MSTest>
     </WorkItemDefinitions>
