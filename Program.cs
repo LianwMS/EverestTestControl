@@ -141,8 +141,8 @@ namespace EverestTest
                         {
                             if (TestHelper.CheckFinished(build.TestTaskId))
                             {
-                                build.TestStatus = TestStatus.Finished;
                                 build.TestFinishedTime = DateTimeOffset.Now;
+                                build.TestStatus = TestStatus.Finished;
                                 WriteTFSBuildToFile(TFSBUILDFILE);
                                 Console.WriteLine("{0} finished", build.TFSBuildNumber);
                             }
