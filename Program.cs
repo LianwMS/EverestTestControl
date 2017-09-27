@@ -22,11 +22,30 @@ namespace EverestTest
 
         static void Main(string[] args)
         {
-            LoadTFSBuildFromFile(TFSBUILDFILE);
-            TFSMonitorWorker tfsMonitor = new TFSMonitorWorker();
-            tfsMonitor.Start();
-            TestWorker testWorker = new TestWorker();
-            testWorker.Start();
+            if (args.Length == 0)
+            {
+                LoadTFSBuildFromFile(TFSBUILDFILE);
+                TFSMonitorWorker tfsMonitor = new TFSMonitorWorker();
+                tfsMonitor.Start();
+                TestWorker testWorker = new TestWorker();
+                testWorker.Start();
+            }
+            else
+            {
+                string dropFolder = args[1];
+                string tag;
+                Console.WriteLine("Test triggered for {0}", dropFolder);
+                TestHelper.BuildDockerImage(dropFolder, dropFolder, out tag);
+                Console.WriteLine("Image tag is {0}", tag);
+
+                Guid taskId = TestHelper.StartTest(tag);
+                Console.WriteLine("Start testing {0}", taskId);
+                while (!TestHelper.CheckFinished(taskId))
+                {
+                    Thread.Sleep(TEST_MONITOR_INTERVAL);
+                }
+                Console.WriteLine("Test finished");
+            }
         }
         
         private static string GenerateFilePath(string fileName)
