@@ -112,12 +112,18 @@ namespace EverestTest
         public static bool CheckFinished(Guid taskId)
         {
             Meri.SDK.Service.AzureMeriService ams = new Meri.SDK.Service.AzureMeriService(new Uri(MERI_URL), GetMeriToken());
-            var token = ams.RequestPerfCounterQueryToken(taskId);
-            var perfCounters = ams.RetrieveMeriPerfCounters(token, taskId, null, null, new string[] {
-                "Running"
-            }).ToArray();
-            int running = (int) perfCounters[0].Value;
-            Console.WriteLine("Task {0} has {1} running", taskId, running);
+            long running = 0;
+            foreach (var item in ams.GetWorkItems(taskId))
+            {
+                foreach (var run in ams.GetWorkItemRuns(taskId, item.Id))
+                {
+                    if (run.State == Meri.SDK.ObjectModel.WorkItemRunState.Initializing || run.State == Meri.SDK.ObjectModel.WorkItemRunState.Running)
+                    {
+                        running++;
+                    }
+                }
+            }
+            Console.WriteLine("Task {0} has {1} items running", taskId, running);
             return running == 0;
         }
 
