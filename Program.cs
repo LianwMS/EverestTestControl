@@ -93,7 +93,7 @@ namespace EverestTest
                     }
                     else
                     {
-                        Console.WriteLine("New builds were not found");
+                        Console.WriteLine("No new builds");
                     }
                     Thread.Sleep(TFS_MONITOR_INTERVAL);
                 }
