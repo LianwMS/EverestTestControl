@@ -22,6 +22,7 @@ namespace EverestTest
 
         static void Main(string[] args)
         {
+            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
             if (args.Length == 0)
             {
                 LoadTFSBuildFromFile(TFSBUILDFILE);
@@ -32,9 +33,10 @@ namespace EverestTest
             }
             else
             {
-                string dropFolder = args[1];
+                string dropFolder = args[0];
                 string tag;
                 Console.WriteLine("Test triggered for {0}", dropFolder);
+                Console.WriteLine("Start Time: {0}", DateTimeOffset.Now);
                 TestHelper.BuildDockerImage(dropFolder, dropFolder, out tag);
                 Console.WriteLine("Image tag is {0}", tag);
 
@@ -45,6 +47,7 @@ namespace EverestTest
                     Thread.Sleep(TEST_MONITOR_INTERVAL);
                 }
                 Console.WriteLine("Test finished");
+                Console.WriteLine("Finish Time: {0}", DateTimeOffset.Now);
             }
         }
         
@@ -125,7 +128,6 @@ namespace EverestTest
         {
             protected override void DoWork(CancellationToken cancel)
             {
-                ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
                 while (!cancel.IsCancellationRequested)
                 {
                     try

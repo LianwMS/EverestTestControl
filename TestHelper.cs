@@ -111,20 +111,27 @@ namespace EverestTest
 
         public static bool CheckFinished(Guid taskId)
         {
-            Meri.SDK.Service.AzureMeriService ams = new Meri.SDK.Service.AzureMeriService(new Uri(MERI_URL), GetMeriToken());
-            long running = 0;
-            foreach (var item in ams.GetWorkItems(taskId))
+            try
             {
-                foreach (var run in ams.GetWorkItemRuns(taskId, item.Id))
+                Meri.SDK.Service.AzureMeriService ams = new Meri.SDK.Service.AzureMeriService(new Uri(MERI_URL), GetMeriToken());
+                long running = 0;
+                foreach (var item in ams.GetWorkItems(taskId))
                 {
-                    if (run.State == Meri.SDK.ObjectModel.WorkItemRunState.Initializing || run.State == Meri.SDK.ObjectModel.WorkItemRunState.Running)
+                    foreach (var run in ams.GetWorkItemRuns(taskId, item.Id))
                     {
-                        running++;
+                        if (item.Name != "Meri.Aggregator" && (run.State == Meri.SDK.ObjectModel.WorkItemRunState.Initializing || run.State == Meri.SDK.ObjectModel.WorkItemRunState.Running))
+                        {
+                            running++;
+                        }
                     }
                 }
+                Console.WriteLine("Task {0} has {1} items running", taskId, running);
+                return running == 0;
             }
-            Console.WriteLine("Task {0} has {1} items running", taskId, running);
-            return running == 0;
+            catch (Exception e)
+            {
+                return false;
+            }
         }
 
         public static string GenerateFilePath(string fileName)
