@@ -115,6 +115,7 @@ namespace EverestTest
             {
                 Meri.SDK.Service.AzureMeriService ams = new Meri.SDK.Service.AzureMeriService(new Uri(MERI_URL), GetMeriToken());
                 long running = 0;
+                long passed = 0, failed = 0;
                 foreach (var item in ams.GetWorkItems(taskId))
                 {
                     if (item.Name == "Meri.Aggregator") continue;
@@ -124,9 +125,14 @@ namespace EverestTest
                         {
                             running++;
                         }
+                        if (run.RunResult != null)
+                        {
+                            passed += run.RunResult.Passed;
+                            failed += run.RunResult.Failed;
+                        }
                     }
                 }
-                Console.WriteLine("Task {0} has {1} items running", taskId, running);
+                Console.WriteLine("Task {0} has {1} items running; passed {2}, failed {3}", taskId, running, passed, failed);
                 return running == 0;
             }
             catch (Exception e)
