@@ -1,14 +1,10 @@
-param([string]$dropFolder, [string]$dbScriptDropFolder)
+param([string]$dropFolder)
 $ErrorActionPreference = 'Stop'
 
 $ACR_SERVER = "everestest.azurecr.io"
 $ACR_REPO = "everest/everest"
 $ACR_USER = "everestest"
 $ACR_PASSWORD = "+O==/J+=senffG4fIk/+d=eneaHOL/=q"
-
-if ($dbScriptDropFolder -eq "") {
-    $dbScriptDropFolder = $dropFolder
-}
 
 function GetBuildVersion($drop) {
     $xmlFile = Join-Path $drop "buildinfo/BuildInfo.xml"
@@ -17,15 +13,13 @@ function GetBuildVersion($drop) {
 }
 
 $version = GetBuildVersion($dropFolder)
-$dbVersion = GetBuildVersion($dbScriptDropFolder)
-$tag = $version + '-' + $dbVersion
+$tag = $version
 
 # Create temporary work folder
 $tmpdir = Join-Path ([System.IO.Path]::GetTempPath()) ([System.Guid]::NewGuid())
 
 "Drop Folder: " + $dropFolder
 "Version: " + $version
-"DB Version: " + $dbVersion
 "Image Tag: " + $tag
 "Work Folder: " + $tmpdir
 
@@ -33,7 +27,7 @@ $tmpdir = Join-Path ([System.IO.Path]::GetTempPath()) ([System.Guid]::NewGuid())
 $ssis = Join-Path $tmpdir "SSIS"
 Copy-Item $PSScriptRoot $tmpdir -Recurse
 
-Copy-Item (Join-Path $dbScriptDropFolder "retail\neutral\ISServerAll_paas_repeatable.sql") $ssis
+Copy-Item (Join-Path $dropFolder "retail\amd64\Microsoft.SqlServer.IntegrationServices.PaasDBUpgrade.dll") $ssis
 Copy-Item (Join-Path $dropFolder "retail\amd64\1033\sqlncli.msi") $ssis
 Copy-Item (Join-Path $dropFolder "retail\amd64\1033\SSISPaaS.msi") $ssis
 Copy-Item (Join-Path $dropFolder "retail\amd64\1033\SSISScaleOut.msi") $ssis

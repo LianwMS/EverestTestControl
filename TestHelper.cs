@@ -117,9 +117,10 @@ namespace EverestTest
                 long running = 0;
                 foreach (var item in ams.GetWorkItems(taskId))
                 {
+                    if (item.Name == "Meri.Aggregator") continue;
                     foreach (var run in ams.GetWorkItemRuns(taskId, item.Id))
                     {
-                        if (item.Name != "Meri.Aggregator" && (run.State == Meri.SDK.ObjectModel.WorkItemRunState.Initializing || run.State == Meri.SDK.ObjectModel.WorkItemRunState.Running))
+                        if (run.State == Meri.SDK.ObjectModel.WorkItemRunState.Initializing || run.State == Meri.SDK.ObjectModel.WorkItemRunState.Running)
                         {
                             running++;
                         }

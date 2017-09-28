@@ -33,7 +33,7 @@ if ($initializeDB) {
 	"DB Tier: " + $env:DBTier
 	
 	if ($env:DBScript -eq $null) {
-		$env:DBScript = "C:\ssis\ISServerAll_paas_repeatable.sql"
+		$env:DBScript = "ProvisionToV5_0.sql"
 	}
 	"DB Script: " + $env:DBScript
 }
@@ -73,7 +73,15 @@ if ($initializeDB) {
 
 	$connection.Close()
 
-	$script = Get-Content $env:DBScript
+	#$script = Get-Content $env:DBScript
+	
+	$assembly = [System.Reflection.Assembly]::LoadFrom("C:\ssis\Microsoft.SqlServer.IntegrationServices.PaasDBUpgrade.dll")
+	$stream = $assembly.GetManifestResourceStream("Microsoft.SqlServer.IntegrationServices.PaasDBUpgrade.Resource." + $env:DBScript);
+	$reader = New-Object System.IO.StreamReader($stream)
+	$script = $reader.ReadToEnd()
+	$reader.Close()
+	$stream.Close()
+	
 	$ss = [Regex]::Split($script, '\b[Gg][Oo]\b')
 	$connection = New-Object System.Data.SqlClient.SqlConnection
 	$connection.ConnectionString = $env:CONNSTR + "Initial Catalog=SSISDB;"
