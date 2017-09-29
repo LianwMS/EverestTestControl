@@ -1,8 +1,12 @@
-===========
 EverestTest
 ===========
 
 The program monitors the builds on TFS, and triggers tests for new builds.
+
+Usage
+-----
+Run `EverestTest.exe` directly to monitor TFS and auto trigger tests.  
+Run `EverestTest.exe <drop folder>` to 
 
 Prerequisites
 -------------
@@ -21,3 +25,8 @@ Prerequisites
   - vsta_setup.exe
 * Meri Client placed under `MeriClient\`
 
+About Docker Image
+==================
+
+About Meri Files
+================

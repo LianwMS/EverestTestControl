@@ -37,7 +37,10 @@ namespace EverestTest
                 string tag;
                 Console.WriteLine("Test triggered for {0}", dropFolder);
                 Console.WriteLine("Start Time: {0}", DateTimeOffset.Now);
-                TestHelper.BuildDockerImage(dropFolder, dropFolder, out tag);
+                if (!TestHelper.BuildDockerImage(dropFolder, out tag))
+                {
+                    return;
+                }
                 Console.WriteLine("Image tag is {0}", tag);
 
                 Guid taskId = TestHelper.StartTest(tag);
@@ -148,7 +151,12 @@ namespace EverestTest
                             string tag = build.ImageTag;
                             if (tag == null)
                             {
-                                TestHelper.BuildDockerImage(build.DropFolder, build.DropFolder, out tag);
+                                if (!TestHelper.BuildDockerImage(build.DropFolder, out tag))
+                                {
+                                    build.TestStatus = TestStatus.Finished;
+                                    WriteTFSBuildToFile(TFSBUILDFILE);
+                                    continue;
+                                }
                                 build.ImageTag = tag;
                                 WriteTFSBuildToFile(TFSBUILDFILE);
                             }

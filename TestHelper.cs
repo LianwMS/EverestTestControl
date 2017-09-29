@@ -22,7 +22,7 @@ namespace EverestTest
 
         private static string meriToken = null;
 
-        public static bool BuildDockerImage(string workerDropFolder, string dbDropFolder, out string tag)
+        public static bool BuildDockerImage(string workerDropFolder, out string tag)
         {
             string psScript = string.Empty;
             string psScriptPath = GenerateFilePath(BUILD_PS);
@@ -31,8 +31,7 @@ namespace EverestTest
 
             string tagOut = string.Empty;
             int result = RunPSScript(psScriptPath, new Dictionary<string, string>(){
-                { "dropFolder", workerDropFolder },
-                { "dbScriptDropFolder", dbDropFolder }
+                { "dropFolder", workerDropFolder }
             }, data =>
             {
                 if (data == null) return;
@@ -73,7 +72,7 @@ namespace EverestTest
             
             Guid taskId = Guid.Empty;
             Console.WriteLine("{0} {1}", GenerateFilePath(TEST_ORGANIZER_EXE), $"\"{tempConfigFile}\" 1");
-            // monitor will stay for 1 min
+            // client will stay for 1 min
             int exitCode = RunCommand(GenerateFilePath(TEST_ORGANIZER_EXE), $"\"{tempConfigFile}\" 1", data =>
             {
                 if (data == null) return;

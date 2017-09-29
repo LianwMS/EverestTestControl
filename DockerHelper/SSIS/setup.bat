@@ -1,3 +1,4 @@
+pushd %~dp0
 reg add "HKLM\Software\Microsoft\StrongName\Verification\*,*" /f
 reg add "HKLM\Software\Wow6432Node\Microsoft\StrongName\Verification\*,*" /f
 ::dotNetFx46-x86-x64-AllOS.exe /passive /norestart
@@ -21,3 +22,4 @@ start /wait msiexec /i SsisAzureFeaturePack_2017_x64.msi /qn /norestart
 
 del /s /q /f %TEMP%\*
 del /s /q /f %WINDIR%\temp\*
+popd
