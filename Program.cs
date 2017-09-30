@@ -12,7 +12,7 @@ namespace EverestTest
 {
     public class Program
     {
-        private const int TFS_MONITOR_INTERVAL = 60000;
+        private const int TFS_MONITOR_INTERVAL = 900000; // 15 mins
         private const int TEST_WAIT_INTERVAL = 5000;
         private const int TEST_MONITOR_INTERVAL = 60000;
 
