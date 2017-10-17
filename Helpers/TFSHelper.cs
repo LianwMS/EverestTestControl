@@ -1,9 +1,10 @@
-﻿using Microsoft.TeamFoundation.Build.Client;
-using Microsoft.TeamFoundation.Client;
-using Newtonsoft.Json;
-using System;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Microsoft.TeamFoundation.Build.Client;
+using Microsoft.TeamFoundation.Client;
+using Newtonsoft.Json;
 
 namespace EverestTest
 {
@@ -42,6 +43,55 @@ namespace EverestTest
             var details = builds.Where(b => b.Status == BuildStatus.Succeeded).ToArray();
 
             return details;
+        }
+
+        public static void LoadTFSBuildFromFile(string fileName, out List<BuildInfo> tfsBuilds)
+        {
+            var strs = File.ReadAllLines(GenerateFilePath(fileName));
+            tfsBuilds = strs.Select(str => JsonConvert.DeserializeObject<BuildInfo>(str)).ToList();
+        }
+
+        public static void WriteTFSBuildToFile(string fileName, List<BuildInfo> tfsBuilds)
+        {
+            string[] strs;
+            lock (tfsBuilds)
+            {
+                strs = tfsBuilds.Select(b => JsonConvert.SerializeObject(b)).ToArray();
+                File.WriteAllLines(fileName, strs);
+            }
+        }
+
+        public static bool TryGetNewBuildFromTFS(List<BuildInfo> tfsBuilds)
+        {
+            bool result = false;
+            var details = TFSHelper.GetSuccessfulBuildDetails();
+
+            foreach (var detail in details)
+            {
+                var isIncluded = tfsBuilds.Where(t => t.TFSBuildNumber.Equals(detail.BuildNumber)).Count();
+                if (isIncluded == 0)
+                {
+                    Console.WriteLine("Found: {0}", detail.BuildNumber);
+                    lock (tfsBuilds)
+                    {
+                        tfsBuilds.Add(new BuildInfo()
+                        {
+                            TFSBuildNumber = detail.BuildNumber,
+                            DropFolder = detail.DropLocation,
+                            BuildStatus = detail.Status.ToString(),
+                            BuildFinishedTime = detail.FinishTime,
+                            TestStatus = TestStatus.NotStart,
+                        });
+                    }
+                    result = true;
+                }
+            }
+            return result;
+        }
+
+        private static string GenerateFilePath(string fileName)
+        {
+            return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, fileName);
         }
 
         public static void TestWrite()

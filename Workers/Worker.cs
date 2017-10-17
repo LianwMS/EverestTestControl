@@ -1,19 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 
 namespace EverestTest
 {
-    abstract class Worker: IDisposable
+    internal abstract class Worker : IDisposable
     {
         private Thread _thread;
         private CancellationTokenSource _cancel;
 
         public Worker()
         {
-            _thread = new Thread(obj => this.DoWork((CancellationToken) obj));
+            _thread = new Thread(obj => this.DoWork((CancellationToken)obj));
             _cancel = new CancellationTokenSource();
         }
 

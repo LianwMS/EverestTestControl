@@ -2,13 +2,6 @@
 
 namespace EverestTest
 {
-    public enum TestStatus
-    {
-        NotStart,
-        TestPrepare,
-        Testing,
-        Finished,
-    }
     public class BuildInfo
     {
         public string TFSBuildNumber { get; set; }
