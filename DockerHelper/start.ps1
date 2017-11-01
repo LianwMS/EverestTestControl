@@ -1,4 +1,8 @@
 $ErrorActionPreference = 'Stop'
+$AzureFileServer = "everestdbfile.file.core.windows.net"
+$AzureFileUser = "AZURE\everestdbfile"
+$AzureFilePassword = "IPhs/CK+lxFkNWuIJQ38GvHw7cAVGqwXOahdRSPR8EhVZKTtjg0YWi1X/ZfpNjdI6OCLhuNvWNUgagKOjQ0SSw=="
+$AzureFileLogFolder = "\\everestdbfile.file.core.windows.net\dbfile\dll"
 
 function OpenSQLConnectionWithRetry($conn) {
 	$DBConnectRetryCount = 3
@@ -33,7 +37,10 @@ if ($initializeDB) {
 	"DB Tier: " + $env:DBTier
 	
 	if ($env:DBScript -eq $null) {
-		$env:DBScript = "ProvisionToV5_0.sql"
+		$assembly = [System.Reflection.Assembly]::LoadFrom("C:\ssis\Microsoft.SqlServer.IntegrationServices.PaasDBUpgrade.dll")
+		$currentVersion = [Microsoft.SqlServer.IntegrationServices.PaasDBUpgrade.PaasDBUpgradeHelper]::GetTargetDBVersion()
+		$currentVersion = $currentVersion.replace('.','_') 
+		$env:DBScript = "ProvisionToV" + $currentVersion + ".sql"
 	}
 	"DB Script: " + $env:DBScript
 }
@@ -75,13 +82,37 @@ if ($initializeDB) {
 
 	#$script = Get-Content $env:DBScript
 	
-	$assembly = [System.Reflection.Assembly]::LoadFrom("C:\ssis\Microsoft.SqlServer.IntegrationServices.PaasDBUpgrade.dll")
+	if ($env:PeoductVerson -eq $null) {
+		"Get DB script from local"
+		Copy-Item "C:\ssis\Microsoft.SqlServer.IntegrationServices.PaasDBUpgrade.dll" "C:\"
+	}
+	else {
+		$HomeDriveLetter = "x:"
+		if (Test-Path -Path $HomeDriveLetter)
+		{
+			"net use exists, try to remove"
+			net use $HomeDriveLetter /delete
+		}
+
+		"Get DB script from Azure file"
+		"net use to " + $AzureFileLogFolder + " with user " + $AzureFileUser
+		net use $HomeDriveLetter "$AzureFileLogFolder" /u:$AzureFileUser $AzureFilePassword
+
+		$folderName = $HomeDriveLetter + "\" + $env:PeoductVerson
+		"Copy Assembly from " + $folderName + " to C:\"
+		Copy-Item (Join-Path $folderName "\Microsoft.SqlServer.IntegrationServices.PaasDBUpgrade.dll") "C:\"
+
+		"Remove net use"
+		net use $HomeDriveLetter /delete
+	}
+
+	$assembly = [System.Reflection.Assembly]::LoadFrom("C:\Microsoft.SqlServer.IntegrationServices.PaasDBUpgrade.dll")
 	$stream = $assembly.GetManifestResourceStream("Microsoft.SqlServer.IntegrationServices.PaasDBUpgrade.Resource." + $env:DBScript);
 	$reader = New-Object System.IO.StreamReader($stream)
 	$script = $reader.ReadToEnd()
 	$reader.Close()
 	$stream.Close()
-	
+
 	$ss = [Regex]::Split($script, '\b[Gg][Oo]\b')
 	$connection = New-Object System.Data.SqlClient.SqlConnection
 	$connection.ConnectionString = $env:CONNSTR + "Initial Catalog=SSISDB;"

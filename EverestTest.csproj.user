@@ -3,4 +3,10 @@
   <PropertyGroup>
     <ProjectView>ShowAllFiles</ProjectView>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <StartArguments>\\BLD-FS-DS-05-01\tfs\IS_Scale\3311519</StartArguments>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <StartArguments>\\BLD-FS-DS-05-02\tfs\IS_Scale\3330527</StartArguments>
+  </PropertyGroup>
 </Project>

@@ -53,7 +53,7 @@ namespace EverestTest
                         Console.WriteLine("Image tag for {0} is {1}", build.TFSBuildNumber, build.ImageTag);
 
                         build.TestStartTime = DateTimeOffset.Now;
-                        build.TestTaskId = TestHelper.StartTest(tag);
+                        build.TestTaskId = TestHelper.StartTest(0, tag);
                         build.TestStatus = TestStatus.Testing;
                         TFSHelper.WriteTFSBuildToFile(TFSBUILDFILE, tfsBuilds);
                         Console.WriteLine("Start testing {0} taskId = {1}", build.TFSBuildNumber, build.TestTaskId);

@@ -19,14 +19,20 @@
     <TaskId></TaskId>
     <FileSetInfos>
       <!--The test assemblies that's needed to run your test-->
-      <FileSetInfo name='EverestMsi' id ='31a46abe-38ba-43a6-86ba-a7b259f4e80d' localFolder='D:\MeriFiles\bits'/>
-      <FileSetInfo name='EverestTestAssemblies' id ='8475ba45-73ed-4def-bca0-71fdf83ce9b1' localFolder='D:\MeriFiles\amd64'/>
-      <FileSetInfo name='EverestTestPipelineReworkFiles' id ='5bec6047-a13a-46bb-9b32-2fa97ef8306f' localFolder='D:\MeriFiles\PipelineReworkFiles'/>
-      <FileSetInfo name='EverestTestConfig' id ='7e341f87-4a7b-4df2-a0d7-b453d67adf3f' localFolder='D:\MeriFiles\config'/>
+      <FileSetInfo name="EverestMsi" id="" localFolder="C:\MeriFiles\bits" />
+      <FileSetInfo name="EverestTestAssemblies" id="" localFolder="C:\MeriFiles\amd64" />
+      <FileSetInfo name="EverestTestPipelineReworkFiles" id="5bec6047-a13a-46bb-9b32-2fa97ef8306f" localFolder="D:\MeriFiles\PipelineReworkFiles" />
+      <FileSetInfo name='EverestTestConfig' id ='' localFolder='C:\MeriFiles\config'/>
     </FileSetInfos>
     <Parameters>
       <Parameter key='ContainerImageTag' value='' />
       <Parameter key='ContainerLocation' value='westus' />
+      <Parameter key='DBScript' value='' />
+      <Parameter key='DBImageVersion' value='' />
+      <!--The test type: 0=Normal, 1=Aginst Prod DB, 2=Aginst Prod Worker-->
+      <Parameter key='TestType' value='0' />
+      <Parameter key='Account' value='everest'/>
+      <Parameter key='Password' value='User@123User@123'/>
     </Parameters>
     <!--Where do you want to run your test, it's only useful when you have multiple SU so you may want to start load from different data center-->
     <Region>MeriWus2</Region>
@@ -35,39 +41,60 @@
       <!--name: the name of your test in Meri
           tag: you can use tag to group related test so that you can start all the test with some specific tag if needed
           manualStart: whether you want the test to be started immediately or you want to start it manually later  -->
+      
       <MSTest name='ScaleOut_FolderAndSecurityTest' tag='EverstSampleTest' manualStart='false'>
         <TestMethod testAssembly='Microsoft.SqlServer.IntegrationServices.MSTest' testClass='Microsoft.SqlServer.IntegrationServices.MSTest.EverestTestCases'>ScaleOut_FolderAndSecurityTest</TestMethod>
         <DelayStartInSecond>0</DelayStartInSecond>
         <InstanceCount>1</InstanceCount>
-        <Region>MeriWus2</Region>
-        <WorkItemType>Recursive</WorkItemType>
-        <TypeArg>1</TypeArg>
-        <Weight>900</Weight>
-      </MSTest>
-      <MSTest name='ScaleOut_ProjectAndEnvironmentTest' tag='EverstSampleTest' manualStart='false'>
-        <TestMethod testAssembly='Microsoft.SqlServer.IntegrationServices.MSTest' testClass='Microsoft.SqlServer.IntegrationServices.MSTest.EverestTestCases'>ScaleOut_ProjectAndEnvironmentTest</TestMethod>
-        <DelayStartInSecond>0</DelayStartInSecond>
-        <InstanceCount>1</InstanceCount>
+        <Parameters>
+          <Parameter key='SQLServerNormal' value='everestest-1.database.windows.net'/>
+          <Parameter key='SQLServerBCTWithProdDB' value='everestest-13.database.windows.net'/>
+          <Parameter key='SQLServerBCTWithProdWorker' value='everestest-25.database.windows.net'/>
+        </Parameters>
         <Region>MeriWus2</Region>
         <WorkItemType>Recursive</WorkItemType>
         <TypeArg>1</TypeArg>
         <Weight>900</Weight>
       </MSTest>
       <!--
-      <MSTest name='ScaleOut_ServerLoggingTest' tag='EverstSampleTest' manualStart='false'>
-        <TestMethod testAssembly='Microsoft.SqlServer.IntegrationServices.MSTest' testClass='Microsoft.SqlServer.IntegrationServices.MSTest.EverestTestCases'>ScaleOut_ServerLoggingTest</TestMethod>
+      <MSTest name='ScaleOut_ProjectAndEnvironmentTest' tag='EverstSampleTest' manualStart='false'>
+        <TestMethod testAssembly='Microsoft.SqlServer.IntegrationServices.MSTest' testClass='Microsoft.SqlServer.IntegrationServices.MSTest.EverestTestCases'>ScaleOut_ProjectAndEnvironmentTest</TestMethod>
         <DelayStartInSecond>0</DelayStartInSecond>
         <InstanceCount>1</InstanceCount>
+        <Parameters>
+          <Parameter key='SQLServerNormal' value='everestest-2.database.windows.net'/>
+          <Parameter key='SQLServerBCTWithProdDB' value='everestest-14.database.windows.net'/>
+          <Parameter key='SQLServerBCTWithProdWorker' value='everestest-26.database.windows.net'/>
+        </Parameters>
         <Region>MeriWus2</Region>
         <WorkItemType>Recursive</WorkItemType>
         <TypeArg>1</TypeArg>
         <Weight>900</Weight>
       </MSTest>
-      -->
+      
+      <MSTest name='ScaleOut_ServerLoggingTest' tag='EverstSampleTest' manualStart='false'>
+        <TestMethod testAssembly='Microsoft.SqlServer.IntegrationServices.MSTest' testClass='Microsoft.SqlServer.IntegrationServices.MSTest.EverestTestCases'>ScaleOut_ServerLoggingTest</TestMethod>
+        <DelayStartInSecond>0</DelayStartInSecond>
+        <InstanceCount>1</InstanceCount>
+        <Parameters>
+          <Parameter key='SQLServerNormal' value='everestest-3.database.windows.net'/>
+          <Parameter key='SQLServerBCTWithProdDB' value='everestest-15.database.windows.net'/>
+          <Parameter key='SQLServerBCTWithProdWorker' value='everestest-27.database.windows.net'/>
+        </Parameters>
+        <Region>MeriWus2</Region>
+        <WorkItemType>Recursive</WorkItemType>
+        <TypeArg>1</TypeArg>
+        <Weight>900</Weight>
+      </MSTest>
       <MSTest name='ScaleOut_UnicodeFlatFileAdapters' tag='EverstSampleTest' manualStart='false'>
         <TestMethod testAssembly='Microsoft.SqlServer.IntegrationServices.MSTest' testClass='Microsoft.SqlServer.IntegrationServices.MSTest.EverestTestCases'>ScaleOut_UnicodeFlatFileAdapters</TestMethod>
         <DelayStartInSecond>0</DelayStartInSecond>
         <InstanceCount>1</InstanceCount>
+        <Parameters>
+          <Parameter key='SQLServerNormal' value='everestest-4.database.windows.net'/>
+          <Parameter key='SQLServerBCTWithProdDB' value='everestest-16.database.windows.net'/>
+          <Parameter key='SQLServerBCTWithProdWorker' value='everestest-28.database.windows.net'/>
+        </Parameters>
         <Region>MeriWus2</Region>
         <WorkItemType>Recursive</WorkItemType>
         <TypeArg>1</TypeArg>
@@ -77,6 +104,11 @@
         <TestMethod testAssembly='Microsoft.SqlServer.IntegrationServices.MSTest' testClass='Microsoft.SqlServer.IntegrationServices.MSTest.EverestTestCases'>ScaleOut_OLEDBTest</TestMethod>
         <DelayStartInSecond>0</DelayStartInSecond>
         <InstanceCount>1</InstanceCount>
+        <Parameters>
+          <Parameter key='SQLServerNormal' value='everestest-5.database.windows.net'/>
+          <Parameter key='SQLServerBCTWithProdDB' value='everestest-17.database.windows.net'/>
+          <Parameter key='SQLServerBCTWithProdWorker' value='everestest-29.database.windows.net'/>
+        </Parameters>
         <Region>MeriWus2</Region>
         <WorkItemType>Recursive</WorkItemType>
         <TypeArg>1</TypeArg>
@@ -86,6 +118,11 @@
         <TestMethod testAssembly='Microsoft.SqlServer.IntegrationServices.MSTest' testClass='Microsoft.SqlServer.IntegrationServices.MSTest.EverestTestCases'>ScaleOut_RawAdapter</TestMethod>
         <DelayStartInSecond>0</DelayStartInSecond>
         <InstanceCount>1</InstanceCount>
+        <Parameters>
+          <Parameter key='SQLServerNormal' value='everestest-6.database.windows.net'/>
+          <Parameter key='SQLServerBCTWithProdDB' value='everestest-18.database.windows.net'/>
+          <Parameter key='SQLServerBCTWithProdWorker' value='everestest-30.database.windows.net'/>
+        </Parameters>
         <Region>MeriWus2</Region>
         <WorkItemType>Recursive</WorkItemType>
         <TypeArg>1</TypeArg>
@@ -95,33 +132,56 @@
         <TestMethod testAssembly='Microsoft.SqlServer.IntegrationServices.MSTest' testClass='Microsoft.SqlServer.IntegrationServices.MSTest.EverestTestCases'>ScaleOut_XMLSrc</TestMethod>
         <DelayStartInSecond>0</DelayStartInSecond>
         <InstanceCount>1</InstanceCount>
+        <Parameters>
+          <Parameter key='SQLServerNormal' value='everestest-7.database.windows.net'/>
+          <Parameter key='SQLServerBCTWithProdDB' value='everestest-19.database.windows.net'/>
+          <Parameter key='SQLServerBCTWithProdWorker' value='everestest-31.database.windows.net'/>
+        </Parameters>
         <Region>MeriWus2</Region>
         <WorkItemType>Recursive</WorkItemType>
         <TypeArg>1</TypeArg>
         <Weight>900</Weight>
       </MSTest>
+      
       <MSTest name='ScaleOut_SQLTask' tag='EverstSampleTest' manualStart='false'>
         <TestMethod testAssembly='Microsoft.SqlServer.IntegrationServices.MSTest' testClass='Microsoft.SqlServer.IntegrationServices.MSTest.EverestTestCases'>ScaleOut_SQLTask</TestMethod>
         <DelayStartInSecond>0</DelayStartInSecond>
         <InstanceCount>1</InstanceCount>
+        <Parameters>
+          <Parameter key='SQLServerNormal' value='everestest-8.database.windows.net'/>
+          <Parameter key='SQLServerBCTWithProdDB' value='everestest-20.database.windows.net'/>
+          <Parameter key='SQLServerBCTWithProdWorker' value='everestest-32.database.windows.net'/>
+        </Parameters>
         <Region>MeriWus2</Region>
         <WorkItemType>Recursive</WorkItemType>
         <TypeArg>1</TypeArg>
         <Weight>900</Weight>
       </MSTest>
+
       <MSTest name='ScaleOut_PipelineRework' tag='EverstSampleTest' manualStart='false'>
         <TestMethod testAssembly='Microsoft.SqlServer.IntegrationServices.MSTest' testClass='Microsoft.SqlServer.IntegrationServices.MSTest.EverestTestCases'>ScaleOut_PipelineRework</TestMethod>
         <DelayStartInSecond>0</DelayStartInSecond>
         <InstanceCount>1</InstanceCount>
+        <Parameters>
+          <Parameter key='SQLServerNormal' value='everestest-9.database.windows.net'/>
+          <Parameter key='SQLServerBCTWithProdDB' value='everestest-21.database.windows.net'/>
+          <Parameter key='SQLServerBCTWithProdWorker' value='everestest-33.database.windows.net'/>
+        </Parameters>
         <Region>MeriWus2</Region>
         <WorkItemType>Recursive</WorkItemType>
         <TypeArg>1</TypeArg>
         <Weight>900</Weight>
       </MSTest>
+
       <MSTest name='ScaleOut_Script' tag='EverstSampleTest' manualStart='false'>
         <TestMethod testAssembly='Microsoft.SqlServer.IntegrationServices.MSTest' testClass='Microsoft.SqlServer.IntegrationServices.MSTest.EverestTestCases'>ScaleOut_Script</TestMethod>
         <DelayStartInSecond>0</DelayStartInSecond>
         <InstanceCount>1</InstanceCount>
+        <Parameters>
+          <Parameter key='SQLServerNormal' value='everestest-10.database.windows.net'/>
+          <Parameter key='SQLServerBCTWithProdDB' value='everestest-22.database.windows.net'/>
+          <Parameter key='SQLServerBCTWithProdWorker' value='everestest-34.database.windows.net'/>
+        </Parameters>
         <Region>MeriWus2</Region>
         <WorkItemType>Recursive</WorkItemType>
         <TypeArg>1</TypeArg>
@@ -131,6 +191,11 @@
         <TestMethod testAssembly='Microsoft.SqlServer.IntegrationServices.MSTest' testClass='Microsoft.SqlServer.IntegrationServices.MSTest.EverestTestCases'>ScaleOut_Lookup</TestMethod>
         <DelayStartInSecond>0</DelayStartInSecond>
         <InstanceCount>1</InstanceCount>
+        <Parameters>
+          <Parameter key='SQLServerNormal' value='everestest-11.database.windows.net'/>
+          <Parameter key='SQLServerBCTWithProdDB' value='everestest-23.database.windows.net'/>
+          <Parameter key='SQLServerBCTWithProdWorker' value='everestest-35.database.windows.net'/>
+        </Parameters>
         <Region>MeriWus2</Region>
         <WorkItemType>Recursive</WorkItemType>
         <TypeArg>1</TypeArg>
@@ -140,11 +205,17 @@
         <TestMethod testAssembly='Microsoft.SqlServer.IntegrationServices.MSTest' testClass='Microsoft.SqlServer.IntegrationServices.MSTest.EverestTestCases'>ScaleOut_OLEDBCommandDest</TestMethod>
         <DelayStartInSecond>0</DelayStartInSecond>
         <InstanceCount>1</InstanceCount>
+        <Parameters>
+          <Parameter key='SQLServerNormal' value='everestest-12.database.windows.net'/>
+          <Parameter key='SQLServerBCTWithProdDB' value='everestest-24.database.windows.net'/>
+          <Parameter key='SQLServerBCTWithProdWorker' value='everestest-36.database.windows.net'/>
+        </Parameters>
         <Region>MeriWus2</Region>
         <WorkItemType>Recursive</WorkItemType>
         <TypeArg>1</TypeArg>
         <Weight>900</Weight>
       </MSTest>
+      -->
     </WorkItemDefinitions>
     <!--Define the customized perf counters, this part is optional-->
     <PerfCounters>

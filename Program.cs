@@ -35,14 +35,26 @@ namespace EverestTest
                 }
                 Console.WriteLine("Image tag is {0}", tag);
 
-                Guid taskId = TestHelper.StartTest(tag);
-                Console.WriteLine("Start testing {0}", taskId);
-                while (!TestHelper.CheckFinished(taskId))
+                var taskIds = TestHelper.StartTests(tag);
+
+                taskIds.ForEach(i => Console.WriteLine("Start Testing: {0}", i));
+
+                var stop = false;
+                while (!stop)
                 {
+                    stop = true;
+                    foreach (Guid taskId in taskIds)
+                    {
+                        bool result;
+                        if (result = TestHelper.CheckFinished(taskId))
+                        {
+                            Console.WriteLine("Test task {0} completed", taskId);
+                        }
+                        stop = stop && result;
+                    }
                     Thread.Sleep(TEST_MONITOR_INTERVAL);
                 }
-                Console.WriteLine("Test finished");
-                Console.WriteLine("Finish Time: {0}", DateTimeOffset.Now);
+                Console.WriteLine("Completed!!!");
             }
         }
     }

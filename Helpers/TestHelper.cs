@@ -7,7 +7,7 @@ using System.Xml;
 
 namespace EverestTest
 {
-    class TestHelper
+    internal class TestHelper
     {
         private const string IMAGE_TAG_TIP = "Image Tag: ";
 
@@ -28,17 +28,22 @@ namespace EverestTest
             Console.WriteLine("Start to run build ps1");
 
             string tagOut = string.Empty;
-            int result = RunPSScript(psScriptPath, new Dictionary<string, string>(){
-                { "dropFolder", workerDropFolder }
-            }, data =>
-            {
-                if (data == null) return;
-                Console.WriteLine(data);
-                if (data.StartsWith(IMAGE_TAG_TIP))
+            int result = RunPSScript(
+                psScriptPath,
+                new Dictionary<string, string>()
                 {
-                    tagOut = data.Substring(IMAGE_TAG_TIP.Length);
-                }
-            });
+                    { "dropFolder", workerDropFolder }
+                },
+                data =>
+                {
+                    if (data == null) return;
+                    Console.WriteLine(data);
+                    if (data.StartsWith(IMAGE_TAG_TIP))
+                    {
+                        tagOut = data.Substring(IMAGE_TAG_TIP.Length);
+                    }
+                });
+
             tag = tagOut;
             if (result == 0)
             {
@@ -52,20 +57,60 @@ namespace EverestTest
             }
         }
 
-        public static Guid StartTest(string containerImageTag)
+        public static bool UploadDBDll()
+        {
+            return true;
+        }
+
+        public static List<Guid> StartTests(string currentContainerImageTag)
+        {
+            var taskIds = new List<Guid>();
+
+            //var taskId1 = StartTest(0, currentContainerImageTag);
+            //taskIds.Add(taskId1);
+
+            //var taskId2 = StartTest(1, currentContainerImageTag, GetCurrentDBProvisionScript());
+            //taskIds.Add(taskId2);
+
+            var taskId3 = StartTest(2, GetCurrentProductImageTag(), GetLatestDBProvisionScript(), currentContainerImageTag);
+            taskIds.Add(taskId3);
+
+            return taskIds;
+        }
+
+        public static Guid StartTest(int testType, string containerImageTag, string dbScript = null, string dbImageVersion = null)
         {
             XmlDocument testConfig = new XmlDocument();
             testConfig.Load(GenerateFilePath(TEST_CONFIG));
 
             foreach (var node in testConfig.SelectNodes(@"//Configuration/Meri/Parameters/Parameter").Cast<XmlNode>())
             {
-                if (node.Attributes["key"].Value == "ContainerImageTag")
+                switch (node.Attributes["key"].Value)
                 {
-                    node.Attributes["value"].Value = containerImageTag;
+                    case "ContainerImageTag":
+                        node.Attributes["value"].Value = containerImageTag;
+                        break;
+                    case "DBScript":
+                        if (!string.IsNullOrEmpty(dbScript))
+                        {
+                            node.Attributes["value"].Value = dbScript;
+                        }
+                        break;
+                    case "DBImageVersion":
+                        if (!string.IsNullOrEmpty(dbImageVersion))
+                        {
+                            node.Attributes["value"].Value = dbImageVersion;
+                        }
+                        break;
+                    case "TestType":
+                        node.Attributes["value"].Value = testType.ToString();
+                        break;
+                    default:
+                        break;
                 }
             }
 
-            testConfig.SelectSingleNode("//Name").InnerText = "Everest " + containerImageTag;
+            testConfig.SelectSingleNode("//Name").InnerText = string.Format("Everest({0}){1}-{2}", testType, containerImageTag, dbScript);
 
             string tempConfigFile = Path.GetTempFileName();
             testConfig.Save(tempConfigFile);
@@ -175,6 +220,21 @@ namespace EverestTest
             p.BeginErrorReadLine();
             p.WaitForExit();
             return p.ExitCode;
+        }
+
+        private static string GetCurrentProductImageTag()
+        {
+            return "14.0.900.5478.3272278";
+        }
+
+        private static string GetCurrentDBProvisionScript()
+        {
+            return "ProvisionToV6_0.sql";
+        }
+
+        private static string GetLatestDBProvisionScript()
+        {
+            return "ProvisionToV7_0.sql";
         }
     }
 }
