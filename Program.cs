@@ -35,6 +35,8 @@ namespace EverestTest
                 }
                 Console.WriteLine("Image tag is {0}", tag);
 
+                AzureFileHelper.UploadPaasDBUpgradeFileToAzureFile(tag, dropFolder + "\\retail\\amd64\\");
+
                 var taskIds = TestHelper.StartTests(tag);
 
                 taskIds.ForEach(i => Console.WriteLine("Start Testing: {0}", i));

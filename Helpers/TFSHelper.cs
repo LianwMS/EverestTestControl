@@ -94,29 +94,12 @@ namespace EverestTest
             return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, fileName);
         }
 
-        public static void TestWrite()
+        public static void RefreshTFSBuildsConfig()
         {
-            var details = GetSuccessfulBuildDetails();
-            BuildInfo[] builds = new BuildInfo[details.Count()];
-            string[] strs = new string[details.Count()];
-            for (int i = 0; i < details.Count(); ++i)
-            {
-                var detail = details[i];
-                builds[i] = new BuildInfo()
-                {
-                    TFSBuildNumber = detail.BuildNumber,
-                    BuildFinishedTime = new DateTimeOffset(detail.FinishTime),
-                    BuildStatus = detail.Status.ToString(),
-                    TestStatus = TestStatus.Finished,
-                    TestStartTime = new DateTimeOffset(0, new TimeSpan(0)),
-                    TestFinishedTime = new DateTimeOffset(0, new TimeSpan(0)),
-                };
-                strs[i] = JsonConvert.SerializeObject(builds[i]);
-                Console.WriteLine(strs[i]);
-            }
-
-            File.WriteAllLines("TFSBuilds.config", strs);
-
+            var tfs = new List<BuildInfo>();
+            LoadTFSBuildFromFile("TFSBuilds.config", out tfs);
+            TryGetNewBuildFromTFS(tfs);
+            WriteTFSBuildToFile("TFSBuilds.config", tfs);
         }
     }
 }

@@ -41,7 +41,7 @@
       <!--name: the name of your test in Meri
           tag: you can use tag to group related test so that you can start all the test with some specific tag if needed
           manualStart: whether you want the test to be started immediately or you want to start it manually later  -->
-      
+
       <MSTest name='ScaleOut_FolderAndSecurityTest' tag='EverstSampleTest' manualStart='false'>
         <TestMethod testAssembly='Microsoft.SqlServer.IntegrationServices.MSTest' testClass='Microsoft.SqlServer.IntegrationServices.MSTest.EverestTestCases'>ScaleOut_FolderAndSecurityTest</TestMethod>
         <DelayStartInSecond>0</DelayStartInSecond>
@@ -56,7 +56,7 @@
         <TypeArg>1</TypeArg>
         <Weight>900</Weight>
       </MSTest>
-      <!--
+
       <MSTest name='ScaleOut_ProjectAndEnvironmentTest' tag='EverstSampleTest' manualStart='false'>
         <TestMethod testAssembly='Microsoft.SqlServer.IntegrationServices.MSTest' testClass='Microsoft.SqlServer.IntegrationServices.MSTest.EverestTestCases'>ScaleOut_ProjectAndEnvironmentTest</TestMethod>
         <DelayStartInSecond>0</DelayStartInSecond>
@@ -71,7 +71,7 @@
         <TypeArg>1</TypeArg>
         <Weight>900</Weight>
       </MSTest>
-      
+<!--
       <MSTest name='ScaleOut_ServerLoggingTest' tag='EverstSampleTest' manualStart='false'>
         <TestMethod testAssembly='Microsoft.SqlServer.IntegrationServices.MSTest' testClass='Microsoft.SqlServer.IntegrationServices.MSTest.EverestTestCases'>ScaleOut_ServerLoggingTest</TestMethod>
         <DelayStartInSecond>0</DelayStartInSecond>
@@ -86,6 +86,7 @@
         <TypeArg>1</TypeArg>
         <Weight>900</Weight>
       </MSTest>
+-->
       <MSTest name='ScaleOut_UnicodeFlatFileAdapters' tag='EverstSampleTest' manualStart='false'>
         <TestMethod testAssembly='Microsoft.SqlServer.IntegrationServices.MSTest' testClass='Microsoft.SqlServer.IntegrationServices.MSTest.EverestTestCases'>ScaleOut_UnicodeFlatFileAdapters</TestMethod>
         <DelayStartInSecond>0</DelayStartInSecond>
@@ -100,6 +101,7 @@
         <TypeArg>1</TypeArg>
         <Weight>900</Weight>
       </MSTest>
+
       <MSTest name='ScaleOut_OLEDBTest' tag='EverstSampleTest' manualStart='false'>
         <TestMethod testAssembly='Microsoft.SqlServer.IntegrationServices.MSTest' testClass='Microsoft.SqlServer.IntegrationServices.MSTest.EverestTestCases'>ScaleOut_OLEDBTest</TestMethod>
         <DelayStartInSecond>0</DelayStartInSecond>
@@ -114,6 +116,7 @@
         <TypeArg>1</TypeArg>
         <Weight>900</Weight>
       </MSTest>
+
       <MSTest name='ScaleOut_RawAdapter' tag='EverstSampleTest' manualStart='false'>
         <TestMethod testAssembly='Microsoft.SqlServer.IntegrationServices.MSTest' testClass='Microsoft.SqlServer.IntegrationServices.MSTest.EverestTestCases'>ScaleOut_RawAdapter</TestMethod>
         <DelayStartInSecond>0</DelayStartInSecond>
@@ -128,6 +131,7 @@
         <TypeArg>1</TypeArg>
         <Weight>900</Weight>
       </MSTest>
+
       <MSTest name='ScaleOut_XMLSrc' tag='EverstSampleTest' manualStart='false'>
         <TestMethod testAssembly='Microsoft.SqlServer.IntegrationServices.MSTest' testClass='Microsoft.SqlServer.IntegrationServices.MSTest.EverestTestCases'>ScaleOut_XMLSrc</TestMethod>
         <DelayStartInSecond>0</DelayStartInSecond>
@@ -142,7 +146,7 @@
         <TypeArg>1</TypeArg>
         <Weight>900</Weight>
       </MSTest>
-      
+
       <MSTest name='ScaleOut_SQLTask' tag='EverstSampleTest' manualStart='false'>
         <TestMethod testAssembly='Microsoft.SqlServer.IntegrationServices.MSTest' testClass='Microsoft.SqlServer.IntegrationServices.MSTest.EverestTestCases'>ScaleOut_SQLTask</TestMethod>
         <DelayStartInSecond>0</DelayStartInSecond>
@@ -187,6 +191,7 @@
         <TypeArg>1</TypeArg>
         <Weight>900</Weight>
       </MSTest>
+
       <MSTest name='ScaleOut_Lookup' tag='EverstSampleTest' manualStart='false'>
         <TestMethod testAssembly='Microsoft.SqlServer.IntegrationServices.MSTest' testClass='Microsoft.SqlServer.IntegrationServices.MSTest.EverestTestCases'>ScaleOut_Lookup</TestMethod>
         <DelayStartInSecond>0</DelayStartInSecond>
@@ -201,6 +206,7 @@
         <TypeArg>1</TypeArg>
         <Weight>900</Weight>
       </MSTest>
+
       <MSTest name='ScaleOut_OLEDBCommandDest' tag='EverstSampleTest' manualStart='false'>
         <TestMethod testAssembly='Microsoft.SqlServer.IntegrationServices.MSTest' testClass='Microsoft.SqlServer.IntegrationServices.MSTest.EverestTestCases'>ScaleOut_OLEDBCommandDest</TestMethod>
         <DelayStartInSecond>0</DelayStartInSecond>
@@ -215,7 +221,7 @@
         <TypeArg>1</TypeArg>
         <Weight>900</Weight>
       </MSTest>
-      -->
+
     </WorkItemDefinitions>
     <!--Define the customized perf counters, this part is optional-->
     <PerfCounters>

@@ -66,11 +66,11 @@ namespace EverestTest
         {
             var taskIds = new List<Guid>();
 
-            //var taskId1 = StartTest(0, currentContainerImageTag);
-            //taskIds.Add(taskId1);
+            var taskId1 = StartTest(0, currentContainerImageTag);
+            taskIds.Add(taskId1);
 
-            //var taskId2 = StartTest(1, currentContainerImageTag, GetCurrentDBProvisionScript());
-            //taskIds.Add(taskId2);
+            var taskId2 = StartTest(1, currentContainerImageTag, GetCurrentDBProvisionScript());
+            taskIds.Add(taskId2);
 
             var taskId3 = StartTest(2, GetCurrentProductImageTag(), GetLatestDBProvisionScript(), currentContainerImageTag);
             taskIds.Add(taskId3);
