@@ -19,10 +19,10 @@
     <TaskId></TaskId>
     <FileSetInfos>
       <!--The test assemblies that's needed to run your test-->
-      <FileSetInfo name="EverestMsi" id="" localFolder="C:\MeriFiles\bits" />
-      <FileSetInfo name="EverestTestAssemblies" id="" localFolder="C:\MeriFiles\amd64" />
+      <FileSetInfo name="EverestMsi" id="b6f2989c-6174-43cd-a476-3740cd072879" localFolder="C:\MeriFiles\bits" />
+      <FileSetInfo name="EverestTestAssemblies" id="6b4cac72-62a7-4d2c-9014-94c9db1e022c" localFolder="C:\MeriFiles\amd64" />
       <FileSetInfo name="EverestTestPipelineReworkFiles" id="5bec6047-a13a-46bb-9b32-2fa97ef8306f" localFolder="D:\MeriFiles\PipelineReworkFiles" />
-      <FileSetInfo name='EverestTestConfig' id ='' localFolder='C:\MeriFiles\config'/>
+      <FileSetInfo name='EverestTestConfig' id ='a1019f08-72c3-4bdd-a6fb-23bffb06894a' localFolder='C:\MeriFiles\config'/>
     </FileSetInfos>
     <Parameters>
       <Parameter key='ContainerImageTag' value='' />

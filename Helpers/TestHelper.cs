@@ -224,12 +224,14 @@ namespace EverestTest
 
         private static string GetCurrentProductImageTag()
         {
-            return "14.0.900.5478.3272278";
+            // Sample: 14.0.900.5478.3272278
+            return AzureFileHelper.GetProductBackendWorkerVersion();
         }
 
         private static string GetCurrentDBProvisionScript()
         {
-            return "ProvisionToV6_0.sql";
+            // Sample: "ProvisionToV6_0.sql"
+            return string.Format("ProvisionToV{0}.sql", AzureFileHelper.GetProductDBVersion());
         }
 
         private static string GetLatestDBProvisionScript()

@@ -4,7 +4,7 @@ $ErrorActionPreference = 'Stop'
 $ACR_SERVER = "everestest.azurecr.io"
 $ACR_REPO = "everest/everest"
 $ACR_USER = "everestest"
-$ACR_PASSWORD = "+O==/J+=senffG4fIk/+d=eneaHOL/=q"
+$ACR_PASSWORD = "ru8Jx8J8VxicGPa3aBoCaun=BpV8VcbM"
 
 function GetBuildVersion($drop) {
     $xmlFile = Join-Path $drop "buildinfo/BuildInfo.xml"

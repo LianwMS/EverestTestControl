@@ -95,11 +95,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Helpers\AzureFileHelper.cs" />
+    <Compile Include="Models\BackendInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="BuildInfo.cs" />
+    <Compile Include="Models\BuildInfo.cs" />
     <Compile Include="Helpers\TestHelper.cs" />
-    <Compile Include="TestStatus.cs" />
+    <Compile Include="Models\TestStatus.cs" />
     <Compile Include="Helpers\TFSHelper.cs" />
     <Compile Include="Workers\TestWorker.cs" />
     <Compile Include="Workers\TFSMonitorWorker.cs" />
@@ -123,6 +124,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
