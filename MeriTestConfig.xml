@@ -22,11 +22,11 @@
       <FileSetInfo name="EverestMsi" id="b6f2989c-6174-43cd-a476-3740cd072879" localFolder="C:\MeriFiles\bits" />
       <FileSetInfo name="EverestTestAssemblies" id="6b4cac72-62a7-4d2c-9014-94c9db1e022c" localFolder="C:\MeriFiles\amd64" />
       <FileSetInfo name="EverestTestPipelineReworkFiles" id="5bec6047-a13a-46bb-9b32-2fa97ef8306f" localFolder="D:\MeriFiles\PipelineReworkFiles" />
-      <FileSetInfo name='EverestTestConfig' id ='a1019f08-72c3-4bdd-a6fb-23bffb06894a' localFolder='C:\MeriFiles\config'/>
+      <FileSetInfo name='EverestTestConfig' id ='' localFolder='C:\MeriFiles\config'/>
     </FileSetInfos>
     <Parameters>
       <Parameter key='ContainerImageTag' value='' />
-      <Parameter key='ContainerLocation' value='westus' />
+      <Parameter key='ContainerLocation' value='eastus' />
       <Parameter key='DBScript' value='' />
       <Parameter key='DBImageVersion' value='' />
       <!--The test type: 0=Normal, 1=Aginst Prod DB, 2=Aginst Prod Worker-->
@@ -86,7 +86,7 @@
         <TypeArg>1</TypeArg>
         <Weight>900</Weight>
       </MSTest>
--->
+        -->
       <MSTest name='ScaleOut_UnicodeFlatFileAdapters' tag='EverstSampleTest' manualStart='false'>
         <TestMethod testAssembly='Microsoft.SqlServer.IntegrationServices.MSTest' testClass='Microsoft.SqlServer.IntegrationServices.MSTest.EverestTestCases'>ScaleOut_UnicodeFlatFileAdapters</TestMethod>
         <DelayStartInSecond>0</DelayStartInSecond>
@@ -102,7 +102,7 @@
         <Weight>900</Weight>
       </MSTest>
 
-      <MSTest name='ScaleOut_OLEDBTest' tag='EverstSampleTest' manualStart='false'>
+    <MSTest name='ScaleOut_OLEDBTest' tag='EverstSampleTest' manualStart='false'>
         <TestMethod testAssembly='Microsoft.SqlServer.IntegrationServices.MSTest' testClass='Microsoft.SqlServer.IntegrationServices.MSTest.EverestTestCases'>ScaleOut_OLEDBTest</TestMethod>
         <DelayStartInSecond>0</DelayStartInSecond>
         <InstanceCount>1</InstanceCount>
@@ -116,7 +116,7 @@
         <TypeArg>1</TypeArg>
         <Weight>900</Weight>
       </MSTest>
-
+ 
       <MSTest name='ScaleOut_RawAdapter' tag='EverstSampleTest' manualStart='false'>
         <TestMethod testAssembly='Microsoft.SqlServer.IntegrationServices.MSTest' testClass='Microsoft.SqlServer.IntegrationServices.MSTest.EverestTestCases'>ScaleOut_RawAdapter</TestMethod>
         <DelayStartInSecond>0</DelayStartInSecond>
@@ -176,7 +176,7 @@
         <TypeArg>1</TypeArg>
         <Weight>900</Weight>
       </MSTest>
-
+ 
       <MSTest name='ScaleOut_Script' tag='EverstSampleTest' manualStart='false'>
         <TestMethod testAssembly='Microsoft.SqlServer.IntegrationServices.MSTest' testClass='Microsoft.SqlServer.IntegrationServices.MSTest.EverestTestCases'>ScaleOut_Script</TestMethod>
         <DelayStartInSecond>0</DelayStartInSecond>
@@ -206,7 +206,7 @@
         <TypeArg>1</TypeArg>
         <Weight>900</Weight>
       </MSTest>
-
+ 
       <MSTest name='ScaleOut_OLEDBCommandDest' tag='EverstSampleTest' manualStart='false'>
         <TestMethod testAssembly='Microsoft.SqlServer.IntegrationServices.MSTest' testClass='Microsoft.SqlServer.IntegrationServices.MSTest.EverestTestCases'>ScaleOut_OLEDBCommandDest</TestMethod>
         <DelayStartInSecond>0</DelayStartInSecond>

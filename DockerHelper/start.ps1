@@ -39,7 +39,6 @@ if ($initializeDB) {
 	if ($env:DBScript -eq $null) {
 		$assembly = [System.Reflection.Assembly]::LoadFrom("C:\ssis\Microsoft.SqlServer.IntegrationServices.PaasDBUpgrade.dll")
 		$currentVersion = [Microsoft.SqlServer.IntegrationServices.PaasDBUpgrade.PaasDBUpgradeHelper]::GetTargetDBVersion()
-		$currentVersion = $currentVersion.replace('.','_') 
 		$env:DBScript = "ProvisionToV" + $currentVersion + ".sql"
 	}
 	"DB Script: " + $env:DBScript

@@ -14,6 +14,7 @@ namespace EverestTest
 
         static void Main(string[] args)
         {
+            // TFSHelper.RefreshTFSBuildsConfig();
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
             if (args.Length == 0)
             {

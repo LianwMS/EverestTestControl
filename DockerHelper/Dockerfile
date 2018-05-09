@@ -25,5 +25,6 @@ RUN powershell -Command \
 # Copy Configfile
 COPY ["Config", "C:/Program Files/Microsoft SQL Server/140/DTS/Binn"]
 
+# Start Cmd
 CMD [ "POWERSHELL", "C:\\ssis\\start.ps1" ]
 
