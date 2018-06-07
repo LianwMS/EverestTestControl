@@ -10,6 +10,7 @@ Run `EverestTest.exe <drop folder>` to manually trigger tests. Note: please spec
 
 Prerequisites
 -------------
+* Visual Studio 2017
 * Docker for Windows (Windows containers)
 * PowerShell (latest)
 * Azure CLI (optional)
