@@ -26,38 +26,54 @@ namespace EverestTest
             }
             else
             {
-                string dropFolder = args[0];
-                string tag;
-                Console.WriteLine("Test triggered for {0}", dropFolder);
-                Console.WriteLine("Start Time: {0}", DateTimeOffset.Now);
-                if (!TestHelper.BuildDockerImage(dropFolder, out tag))
+                string[] options = args;
+                if (options[0] == "-RefreshTFS")
                 {
-                    return;
+                    TFSHelper.RefreshTFSBuildsConfig();
                 }
-                Console.WriteLine("Image tag is {0}", tag);
-
-                AzureFileHelper.UploadPaasDBUpgradeFileToAzureFile(tag, dropFolder + "\\retail\\amd64\\");
-
-                var taskIds = TestHelper.StartTests(tag);
-
-                taskIds.ForEach(i => Console.WriteLine("Start Testing: {0}", i));
-
-                var stop = false;
-                while (!stop)
+                else if (options[0] == "-RefreshAzureFile")
                 {
-                    stop = true;
-                    foreach (Guid taskId in taskIds)
+                    string filePath = options[1];
+                    AzureFileHelper.RefreshInfoFile(filePath);
+                }
+                else if (options[0] == "-Run")
+                {
+                    string dropFolder = options[1];
+                    string fullOption = options[2];
+                    bool isfull = fullOption == "-all" ? true : false;
+
+                    string tag;
+                    Console.WriteLine("Test triggered for {0}", dropFolder);
+                    Console.WriteLine("Start Time: {0}", DateTimeOffset.Now);
+                    if (!TestHelper.BuildDockerImage(dropFolder, out tag))
                     {
-                        bool result;
-                        if (result = TestHelper.CheckFinished(taskId))
-                        {
-                            Console.WriteLine("Test task {0} completed", taskId);
-                        }
-                        stop = stop && result;
+                        return;
                     }
-                    Thread.Sleep(TEST_MONITOR_INTERVAL);
+                    Console.WriteLine("Image tag is {0}", tag);
+
+                    AzureFileHelper.UploadPaasDBUpgradeFileToAzureFile(tag, dropFolder + "\\retail\\amd64\\");
+
+                    var taskIds = TestHelper.StartTests(tag, isfull);
+
+                    taskIds.ForEach(i => Console.WriteLine("Start Testing: {0}", i));
+
+                    var stop = false;
+                    while (!stop)
+                    {
+                        stop = true;
+                        foreach (Guid taskId in taskIds)
+                        {
+                            bool result;
+                            if (result = TestHelper.CheckFinished(taskId))
+                            {
+                                Console.WriteLine("Test task {0} completed", taskId);
+                            }
+                            stop = stop && result;
+                        }
+                        Thread.Sleep(TEST_MONITOR_INTERVAL);
+                    }
+                    Console.WriteLine("Completed!!!");
                 }
-                Console.WriteLine("Completed!!!");
             }
         }
     }

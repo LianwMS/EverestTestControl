@@ -62,18 +62,21 @@ namespace EverestTest
             return true;
         }
 
-        public static List<Guid> StartTests(string currentContainerImageTag)
+        public static List<Guid> StartTests(string currentContainerImageTag, bool isFull = false)
         {
             var taskIds = new List<Guid>();
 
             var taskId1 = StartTest(0, currentContainerImageTag);
             taskIds.Add(taskId1);
 
-            //var taskId2 = StartTest(1, currentContainerImageTag, GetCurrentDBProvisionScript());
-            //taskIds.Add(taskId2);
+            if (isFull)
+            {
+                var taskId2 = StartTest(1, currentContainerImageTag, GetCurrentDBProvisionScript());
+                taskIds.Add(taskId2);
 
-            //var taskId3 = StartTest(2, GetCurrentProductImageTag(), GetLatestDBProvisionScript(), currentContainerImageTag);
-            //taskIds.Add(taskId3);
+                var taskId3 = StartTest(2, GetCurrentProductImageTag(), GetLatestDBProvisionScript(), currentContainerImageTag);
+                taskIds.Add(taskId3);
+            }
 
             return taskIds;
         }
@@ -236,7 +239,7 @@ namespace EverestTest
 
         private static string GetLatestDBProvisionScript()
         {
-            return "ProvisionToV16_0.sql";
+            return "ProvisionToV17.0.sql";
         }
     }
 }

@@ -87,5 +87,25 @@ namespace EverestTest
         {
             return GetCurrentProductBackendInfo().DBVersion;
         }
+
+        public static bool RefreshInfoFile(string localFilePath)
+        {
+            CloudFileClient fileClient = storageAccount.CreateCloudFileClient();
+
+            CloudFileShare share = fileClient.GetShareReference(BACKEND_INFO_SHARED_REFERENCE_NAME);
+            if (share.Exists())
+            {
+                CloudFileDirectory rootDir = share.GetRootDirectoryReference();
+
+                // Create file reference
+                CloudFile destFile = rootDir.GetFileReference(BACKEND_INFO_FILE_NAME);
+
+                // Upload File
+                destFile.UploadFromFile(localFilePath, System.IO.FileMode.Open);
+
+                return true;
+            }
+            return false;
+        }
     }
 }

@@ -1,0 +1,7 @@
+[{"WorkerVersion":"14.0.900.5478.3272278","DBVersion":"6.0","CurrentOnProd":false,"Description":"2017 Sept Public Preview"},
+{"WorkerVersion":"14.0.900.13187.3333387","DBVersion":"7.0","CurrentOnProd":false,"Description":"2017 Oct Release"},
+{"WorkerVersion":"14.0.900.18526.3361626","DBVersion":"8.0","CurrentOnProd":false,"Description":"2017 Nov Release"},
+{"WorkerVersion":"14.0.900.28762.3401362","DBVersion":"10.0","CurrentOnProd":false,"Description":"2018 Jan Release"},
+{"WorkerVersion":"14.0.900.33034.3422134","DBVersion":"12.0","CurrentOnProd":false,"Description":"2018 Feb Release"},
+{"WorkerVersion":"14.0.900.49231.3472831","DBVersion":"16.0","CurrentOnProd":false,"Description":"2018 Apr Release"},
+{"WorkerVersion":"14.0.900.60896.3523996","DBVersion":"17.0","CurrentOnProd":true,"Description":"2018 May Release"}]

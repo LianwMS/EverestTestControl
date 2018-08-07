@@ -1,7 +1,7 @@
 $ErrorActionPreference = 'Stop'
 $AzureFileServer = "everestdbfile.file.core.windows.net"
 $AzureFileUser = "AZURE\everestdbfile"
-$AzureFilePassword = "IPhs/CK+lxFkNWuIJQ38GvHw7cAVGqwXOahdRSPR8EhVZKTtjg0YWi1X/ZfpNjdI6OCLhuNvWNUgagKOjQ0SSw=="
+$AzureFilePassword = "ceR3SaZjLX14QlQljx1FH9j/wGmFlqKdSFn9s3PjQbNTC+Gd+FvEN3qH9Kh++mSs4jUphJ/72ipJ+pazXEvVVQ=="
 $AzureFileLogFolder = "\\everestdbfile.file.core.windows.net\dbfile\dll"
 
 function OpenSQLConnectionWithRetry($conn) {

@@ -1,7 +1,7 @@
 # docker run --rm everest -e CONNSTR="<ConnectionString>"
 
 # Use Latest windows image cached by container service, Contact: Anders
-FROM microsoft/windowsservercore@sha256:34a0199e1f8c4c978d08e5a4e67af961752e41212b7bde9c1ea570ee29dcff2c
+FROM microsoft/windowsservercore@sha256:c06b4bfaf634215ea194e6005450740f3a230b27c510cf8facab1e9c678f3a99
 
 # Copy SSIS file needed
 COPY SSIS C:/ssis/

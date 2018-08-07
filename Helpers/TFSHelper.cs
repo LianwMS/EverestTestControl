@@ -12,7 +12,7 @@ namespace EverestTest
     {
         private const string TFSSERVER = "http://sqlbuvsts01:8080/";
         private const string PROJECTNAME = "SQL Server";
-        private const string BUILDDEFINITIONNAME = "[O][CB][IS_Scale][Box][GB][05]";
+        private const string BUILDDEFINITIONNAME = "[O][CB][IS_Scale][Box][Std][GB][05]";
 
         public static IBuildDetail GetLastSuccessfulBuildDetails()
         {

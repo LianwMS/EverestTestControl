@@ -119,7 +119,6 @@
     </Content>
     <Content Include="MeriTestConfig.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
   <ItemGroup>
@@ -127,9 +126,11 @@
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
+    <Content Include="productsInfo.txt" >
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="TFSBuilds.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
   <ItemGroup>

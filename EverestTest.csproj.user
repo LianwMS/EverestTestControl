@@ -7,6 +7,6 @@
     <StartArguments>\\BLD-FS-DS-05-01\tfs\IS_Scale\3311519</StartArguments>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
-    <StartArguments>\\BLD-FS-DS-05-07\tfs\IS_Scale\3505937</StartArguments>
+    <StartArguments>-Run "\\BLD-FS-DS-05-03\tfs\IS_Scale\3557823" -1</StartArguments>
   </PropertyGroup>
 </Project>
