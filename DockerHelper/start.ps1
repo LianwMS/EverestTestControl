@@ -126,13 +126,13 @@ if ($initializeDB) {
 	$connection.Close()
 }
 
-$workerConfigFile = 'C:\Program Files\Microsoft SQL Server\140\DTS\Binn\WorkerAgent.config'
+$workerConfigFile = 'C:\Program Files\Microsoft SQL Server\140\DTS\Binn\AgentHost\WorkerAgent.config'
 
 $workerConfig = Get-Content $workerConfigFile -raw | ConvertFrom-Json
 $workerConfig.AgentId = $AgentId
 $workerConfig | ConvertTo-Json -Compress | Set-Content $workerConfigFile
 
-$AISConfigFile = 'C:\Program Files\Microsoft SQL Server\140\DTS\Binn\AISAgentServiceSettings.config'
+$AISConfigFile = 'C:\Program Files\Microsoft SQL Server\140\DTS\Binn\AgentHost\AISAgentServiceSettings.config'
 
 $AISConfig = Get-Content $AISConfigFile -raw | ConvertFrom-Json
 $AISConfig.agentId = $AgentId

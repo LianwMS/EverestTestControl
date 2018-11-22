@@ -20,7 +20,7 @@ namespace EverestTest
 
         private static string meriToken = null;
 
-        public static bool BuildDockerImage(string workerDropFolder, out string tag)
+        public static bool BuildDockerImage(string workerSourceTag, out string tag)
         {
             string psScript = string.Empty;
             string psScriptPath = GenerateFilePath(BUILD_PS);
@@ -32,7 +32,7 @@ namespace EverestTest
                 psScriptPath,
                 new Dictionary<string, string>()
                 {
-                    { "dropFolder", workerDropFolder }
+                    { "sourceTag", workerSourceTag }
                 },
                 data =>
                 {
