@@ -37,7 +37,7 @@ if ($initializeDB) {
 	"DB Tier: " + $env:DBTier
 	
 	if ($env:DBScript -eq $null) {
-		$assembly = [System.Reflection.Assembly]::LoadFrom("C:\ssis\Microsoft.SqlServer.IntegrationServices.PaasDBUpgrade.dll")
+		$assembly = [System.Reflection.Assembly]::LoadFrom("C:\Program Files\Microsoft SQL Server\140\DTS\Binn\ssisdb\Microsoft.SqlServer.IntegrationServices.PaasDBUpgrade.dll")
 		$currentVersion = [Microsoft.SqlServer.IntegrationServices.PaasDBUpgrade.PaasDBUpgradeHelper]::GetTargetDBVersion()
 		$env:DBScript = "ProvisionToV" + $currentVersion + ".sql"
 	}
@@ -126,13 +126,13 @@ if ($initializeDB) {
 	$connection.Close()
 }
 
-$workerConfigFile = 'C:\Program Files\Microsoft SQL Server\140\DTS\Binn\WorkerAgent.config'
+$workerConfigFile = 'C:\Program Files\Microsoft SQL Server\140\DTS\Binn\AgentHost\WorkerAgent.config'
 
 $workerConfig = Get-Content $workerConfigFile -raw | ConvertFrom-Json
 $workerConfig.AgentId = $AgentId
 $workerConfig | ConvertTo-Json -Compress | Set-Content $workerConfigFile
 
-$AISConfigFile = 'C:\Program Files\Microsoft SQL Server\140\DTS\Binn\AISAgentServiceSettings.config'
+$AISConfigFile = 'C:\Program Files\Microsoft SQL Server\140\DTS\Binn\AgentHost\AISAgentServiceSettings.config'
 
 $AISConfig = Get-Content $AISConfigFile -raw | ConvertFrom-Json
 $AISConfig.agentId = $AgentId

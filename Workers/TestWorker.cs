@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 
+// RunTime Test not call the code due to have moved IR Worker agent code from IS branch to HDIS branch
 namespace EverestTest
 {
     internal class TestWorker : Worker
@@ -41,12 +42,14 @@ namespace EverestTest
                         string tag = build.ImageTag;
                         if (tag == null)
                         {
-                            if (!TestHelper.BuildDockerImage(build.DropFolder, out tag))
-                            {
-                                build.TestStatus = TestStatus.Finished;
-                                TFSHelper.WriteTFSBuildToFile(TFSBUILDFILE, tfsBuilds);
-                                continue;
-                            }
+                            // The method BuildDockerImage has been updated due to have moved IR Worker agent code from IS branch to HDIS branch
+                            // Comment out the below code for not call method BuildDockerImage
+                            //if (!TestHelper.BuildDockerImage(build.DropFolder, out tag))
+                            //{
+                            //    build.TestStatus = TestStatus.Finished;
+                            //    TFSHelper.WriteTFSBuildToFile(TFSBUILDFILE, tfsBuilds);
+                            //    continue;
+                            //}
                             build.ImageTag = tag;
                             TFSHelper.WriteTFSBuildToFile(TFSBUILDFILE, tfsBuilds);
                         }
