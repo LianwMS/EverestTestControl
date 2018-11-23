@@ -37,7 +37,7 @@ if ($initializeDB) {
 	"DB Tier: " + $env:DBTier
 	
 	if ($env:DBScript -eq $null) {
-		$assembly = [System.Reflection.Assembly]::LoadFrom("C:\ssis\Microsoft.SqlServer.IntegrationServices.PaasDBUpgrade.dll")
+		$assembly = [System.Reflection.Assembly]::LoadFrom("C:\Program Files\Microsoft SQL Server\140\DTS\Binn\ssisdb\Microsoft.SqlServer.IntegrationServices.PaasDBUpgrade.dll")
 		$currentVersion = [Microsoft.SqlServer.IntegrationServices.PaasDBUpgrade.PaasDBUpgradeHelper]::GetTargetDBVersion()
 		$env:DBScript = "ProvisionToV" + $currentVersion + ".sql"
 	}

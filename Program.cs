@@ -19,13 +19,16 @@ namespace EverestTest
                 if (options[0] == "-Run")
                 {
                     string sourceTag = options[1];
-                    string fullOption = options[2];
+                    string userName = options[2];
+                    string password = options[3];
+                    string fullOption = options[4];
+
                     bool isfull = fullOption == "-all" ? true : false;
 
                     string tag;
 
                     Console.WriteLine("Start Time: {0}", DateTimeOffset.Now);
-                    if (!TestHelper.BuildDockerImage(sourceTag, out tag))
+                    if (!TestHelper.BuildDockerImage(sourceTag, userName, password, out tag))
                     {
                         return;
                     }

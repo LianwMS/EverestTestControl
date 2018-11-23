@@ -1,4 +1,4 @@
-param([string]$sourceTag)
+param([string]$sourceTag, [string]$userName,[string]$password)
 $ErrorActionPreference = 'Stop'
 
 $ACR_SERVER = "everestest.azurecr.io"
@@ -18,7 +18,7 @@ pushd $tmpdir
 
 # Build and push image
 docker login $ACR_SERVER -u $ACR_USER -p $ACR_PASSWORD
-docker login --username everestruntime --password lHlbD2IU9EIKZUMCluP/j11YHMLjaG4D everestruntime.azurecr.io
+docker login --username $userName --password $password everestruntime.azurecr.io
 docker build --build-arg VERSION=$sourceTag -t "${ACR_SERVER}/${ACR_REPO}:${sourceTag}" .
 docker push "${ACR_SERVER}/${ACR_REPO}:${sourceTag}"
 
